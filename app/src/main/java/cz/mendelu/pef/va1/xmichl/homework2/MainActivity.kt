@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import cz.mendelu.pef.va1.xmichl.homework2.ui.screens.ContactListScreen
+import cz.mendelu.pef.va1.xmichl.homework2.ui.screens.NewContactScreen
 import cz.mendelu.pef.va1.xmichl.homework2.ui.theme.Homework2Theme
 
 class MainActivity : ComponentActivity() {
@@ -22,22 +24,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    NewContactScreen()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Homework2Theme {
-        Greeting("Android")
     }
 }

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'cz.mendelu.pef.va1.xmichl.golf'
+    namespace 'cz.mendelu.pef.va1.xmichl.homework2'
     compileSdk 33
 
     defaultConfig {
-        applicationId "cz.mendelu.pef.va1.xmichl.golf"
+        applicationId "cz.mendelu.pef.va1.xmichl.homework2"
         minSdk 33
         targetSdk 33
         versionCode 1

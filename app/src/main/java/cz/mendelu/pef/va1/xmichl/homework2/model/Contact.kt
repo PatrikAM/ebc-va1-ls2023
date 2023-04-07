@@ -10,7 +10,7 @@ data class Contact(
     val name: String,
 
     @ColumnInfo(name = "surname")
-    val score: String,
+    val surname: String,
 
     @ColumnInfo(name = "phone_number")
     val phone_number: String,
@@ -19,7 +19,7 @@ data class Contact(
     val type: ContactType,
 
     @ColumnInfo(name = "email")
-    val email: ContactType
+    val email: String
 ) {
 
     @PrimaryKey(autoGenerate = true)
