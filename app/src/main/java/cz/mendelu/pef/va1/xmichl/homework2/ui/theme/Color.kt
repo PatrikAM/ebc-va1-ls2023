@@ -1,4 +1,4 @@
-package cz.mendelu.pef.va1.xmichl.golf.ui.theme
+package cz.mendelu.pef.va1.xmichl.homework2.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

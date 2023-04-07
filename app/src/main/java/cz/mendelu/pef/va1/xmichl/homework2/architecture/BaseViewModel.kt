@@ -1,4 +1,4 @@
-package cz.mendelu.pef.va1.xmichl.golf.architecture
+package cz.mendelu.pef.va1.xmichl.homework2.architecture
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope

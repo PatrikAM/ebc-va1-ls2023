@@ -2,4 +2,6 @@
 <resources>
 
     <style name="Theme.Golf" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Homework2" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

@@ -1,4 +1,4 @@
-package cz.mendelu.pef.va1.xmichl.golf
+package cz.mendelu.pef.va1.xmichl.homework2
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,20 +10,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import cz.mendelu.pef.va1.xmichl.golf.navigation.Destination
-import cz.mendelu.pef.va1.xmichl.golf.navigation.NavGraph
-import cz.mendelu.pef.va1.xmichl.golf.ui.screens.AddScreen
-import cz.mendelu.pef.va1.xmichl.golf.ui.screens.MainScreen
-import cz.mendelu.pef.va1.xmichl.golf.ui.theme.GolfTheme
+import cz.mendelu.pef.va1.xmichl.homework2.ui.theme.Homework2Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GolfTheme {
+            Homework2Theme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    NavGraph(startDestination = Destination.MainScreen.route)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Greeting("Android")
                 }
             }
         }
@@ -38,7 +37,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    GolfTheme {
+    Homework2Theme {
         Greeting("Android")
     }
 }

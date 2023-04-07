@@ -1,4 +1,4 @@
-package cz.mendelu.pef.va1.xmichl.golf.database
+package cz.mendelu.pef.va1.xmichl.homework2.database
 
 import android.content.Context
 import androidx.room.Database
@@ -6,21 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import cz.mendelu.pef.va1.xmichl.golf.model.Golfist
 
-
 @Database(entities = [Golfist::class], version = 1, exportSchema = true)
-abstract class GolfistsDatabase : RoomDatabase() {
+abstract class ContactsDatabase : RoomDatabase() {
 
-    abstract fun golfistsDao(): GolfistsDao
+    abstract fun contactsDao(): ContactsDao
 
     companion object {
-        private var INSTANCE: GolfistsDatabase? = null
-        fun getDatabase(context: Context): GolfistsDatabase {
+        private var INSTANCE: ContactsDatabase? = null
+        fun getDatabase(context: Context): ContactsDatabase {
             if (INSTANCE == null) {
-                synchronized(GolfistsDatabase::class.java) {
+                synchronized(ContactsDatabase::class.java) {
                     if (INSTANCE == null) {
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
-                            GolfistsDatabase::class.java, "golfists_database"
+                            ContactsDatabase::class.java, "contacts_database"
                         ).fallbackToDestructiveMigration()
                             .build()
                     }
