@@ -1,19 +1,20 @@
 package cz.mendelu.pef.va1.xmichl.homework2.ui.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.navigation.NavGraph
+import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
+import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.BackArrowScreen
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.NewContactTextField
 
 @Composable
-fun NewContactScreen() {
+fun NewContactScreen(navigation: INavigationRouter) {
     BackArrowScreen(
         appBarTitle = "New Contact",
-        onBackClick = { /*TODO*/ }
+        onBackClick = {
+            navigation.returnBack()
+        }
     ) {
         NewContactScreenContent()
     }
@@ -26,6 +27,12 @@ fun NewContactScreenContent(
     //navigation: NavGraph
 ) {
     var phoneNumber = remember { mutableStateOf("") }
+    var selectedType by remember { mutableStateOf("") }
+
+    val options = listOf(
+        ContactType.PERSONAL.toString(),
+        ContactType.WORK.toString()
+    )
     Column {
         NewContactTextField(
             value = phoneNumber.value,
@@ -36,6 +43,7 @@ fun NewContactScreenContent(
             },
             error = ""
         )
+
     }
 
     //Button()

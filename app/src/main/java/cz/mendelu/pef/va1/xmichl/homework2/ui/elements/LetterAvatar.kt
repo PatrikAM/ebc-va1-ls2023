@@ -17,12 +17,12 @@ import kotlin.random.Random
 @Composable
 fun LetterAvatar(letter: Char) {
     val colors: List<Color> = listOf(
-        Color.Blue,
-        Color.Red,
-        Color.Gray,
-        Color.Green,
-        Color.Magenta,
-        Color.Yellow
+        Color(0xffa05203),
+        Color(0xff034f22),
+        Color(0xff15157a),
+        Color(0xFF7A0010),
+        Color(0xFF40270B),
+        Color(0xFF88304a)
     )
     Box(
         contentAlignment = Alignment.Center,
@@ -33,7 +33,8 @@ fun LetterAvatar(letter: Char) {
         Text(
             text = letter.toString(),
             fontWeight = FontWeight.Bold,
-            fontSize = 30.sp
+            fontSize = 30.sp,
+            color = Color.White
 
         )
     }
