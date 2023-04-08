@@ -6,17 +6,38 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
 import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.LetterAvatar
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactListScreen(navigation: INavigationRouter) {
+fun ContactListScreen(
+    navigation: INavigationRouter,
+    viewModel: ContactListViewModel = getViewModel()
+) {
 
-    val contacts: List<Contact> = listOf(
+    val contacts = remember { mutableStateListOf<Contact>() }
+
+    viewModel.contactListUIState.value.let {
+        when(it){
+            ContactListUIState.Default -> {
+                viewModel.loadTasks()
+            }
+            is ContactListUIState.Success -> {
+                contacts.clear()
+                contacts.addAll(it.contacts)
+            }
+        }
+    }
+
+
+    val contactsDummy: List<Contact> = listOf(
         Contact(
             name = "John",
             surname = "Wick",
@@ -50,7 +71,7 @@ fun ContactListScreen(navigation: INavigationRouter) {
     ) {
         ContactListScreenContent(
             paddingValues = it,
-            contacts = contacts
+            contacts = contactsDummy
             //navigation = navigation
         )
     }
@@ -61,7 +82,6 @@ fun ContactListScreen(navigation: INavigationRouter) {
 fun ContactListScreenContent(
     paddingValues: PaddingValues,
     contacts: List<Contact>
-    //navigation: INavigationRouter
 ) {
 
     LazyColumn(modifier = Modifier.padding(paddingValues)) {
@@ -70,7 +90,6 @@ fun ContactListScreenContent(
                 ContactRow(contact = it)
             }
         }
-
     }
 }
 

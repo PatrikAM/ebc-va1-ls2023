@@ -21,7 +21,6 @@ fun NewContactScreen(navigation: INavigationRouter) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewContactScreenContent(
     //actions: NewContactScreenActions,
