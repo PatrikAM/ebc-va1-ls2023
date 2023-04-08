@@ -3,6 +3,7 @@ package cz.mendelu.pef.va1.xmichl.homework2.ui.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
 import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.BackArrowScreen
