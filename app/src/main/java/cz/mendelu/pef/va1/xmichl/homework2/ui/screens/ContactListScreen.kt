@@ -10,9 +10,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
-import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
-import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.LetterAvatar
+import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.ContactRow
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,34 +24,16 @@ fun ContactListScreen(
     val contacts = remember { mutableStateListOf<Contact>() }
 
     viewModel.contactListUIState.value.let {
-        when(it){
+        when (it) {
             ContactListUIState.Default -> {
-                viewModel.loadTasks()
+                viewModel.loadContacts()
             }
             is ContactListUIState.Success -> {
                 contacts.clear()
-                contacts.addAll(it.contacts)
+                contacts.addAll(it.contacts.sortedBy { contact -> contact.surname })
             }
         }
     }
-
-
-    val contactsDummy: List<Contact> = listOf(
-        Contact(
-            name = "John",
-            surname = "Wick",
-            phone_number = "+420234234234",
-            type = ContactType.WORK,
-            email = ""
-        ),
-        Contact(
-            name = "Susan",
-            surname = "Doe",
-            phone_number = "+420123132123",
-            type = ContactType.PERSONAL,
-            email = ""
-        ),
-        )
 
     Scaffold(
         topBar = {
@@ -63,15 +44,15 @@ fun ContactListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                navigation.navigateToNewContactScreen()
-            }) {
+                    navigation.navigateToNewContactScreen()
+                }) {
                 Icon(Icons.Filled.Add, contentDescription = "Add")
             }
         }
     ) {
         ContactListScreenContent(
             paddingValues = it,
-            contacts = contactsDummy
+            contacts = contacts
             //navigation = navigation
         )
     }
@@ -89,17 +70,6 @@ fun ContactListScreenContent(
             item(key = it.id) {
                 ContactRow(contact = it)
             }
-        }
-    }
-}
-
-@Composable
-fun ContactRow(contact: Contact) {
-    Row {
-        LetterAvatar(contact.name.get(0))
-        Column {
-            Text(text = "${contact.surname}, ${contact.name}")
-            Text(text = "${contact.phone_number}")
         }
     }
 }

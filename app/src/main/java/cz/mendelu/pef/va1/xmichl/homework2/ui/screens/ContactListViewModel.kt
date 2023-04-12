@@ -13,7 +13,7 @@ class ContactListViewModel(
     val contactListUIState: MutableState<ContactListUIState> =
         mutableStateOf(ContactListUIState.Default)
 
-    fun loadTasks() {
+    fun loadContacts() {
         launch {
             repository.getAll().collect {
                 contactListUIState.value = ContactListUIState.Success(it)

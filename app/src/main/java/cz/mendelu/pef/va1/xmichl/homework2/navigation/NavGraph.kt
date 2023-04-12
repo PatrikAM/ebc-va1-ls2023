@@ -21,11 +21,11 @@ fun NavGraph(
     NavHost(navController = navController,
         startDestination = startDestination){
 
-        composable(Destination.ContactListScreen.route){
+        composable(Destination.ContactListScreen.route) {
             ContactListScreen(navigation)
         }
 
-        composable(Destination.NewContactScreen.route){
+        composable(Destination.NewContactScreen.route) {
             NewContactScreen(navigation)
         }
     }

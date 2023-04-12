@@ -7,27 +7,49 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "contacts")
 data class Contact(
     @ColumnInfo(name = "name")
-    val name: String,
+    var name: String,
 
     @ColumnInfo(name = "surname")
-    val surname: String,
+    var surname: String,
 
     @ColumnInfo(name = "phone_number")
-    val phone_number: String,
+    var phone_number: String,
 
     @ColumnInfo(name = "type")
-    val type: ContactType,
+    var type: ContactType,
 
     @ColumnInfo(name = "email")
-    val email: String
+    var email: String
 ) {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id")
     var id: Long? = null
 
+    fun isEmailValid(): Boolean {
+        val emailRegex = Regex("^([\\w\\d.+\\-]+)@([\\w\\d\\-]+)\\.([\\w]{2,})(\\.[\\w]{2,})?$")
+        return email.isEmpty().or(emailRegex.matches(email))
+    }
+
+    fun isNameValid(): Boolean = name.isNotEmpty()
+
+    fun isSurnameValid(): Boolean = surname.isNotEmpty()
+
+    fun isPhoneNumberValid(): Boolean {
+        val phoneRegex = Regex("^\\+?[0-9]{6,}$")
+        return phoneRegex.matches(phone_number)
+    }
+
+    fun isContactValid(): Boolean {
+        return isEmailValid()
+            .and(isNameValid())
+            .and(isSurnameValid())
+            .and(isPhoneNumberValid())
+    }
+
 }
 
 enum class ContactType {
-    PERSONAL, WORK
+    PERSONAL,
+    WORK
 }
