@@ -30,6 +30,4 @@ class NewContactViewModel(
         data.contact = contact
         newContactUIState.value = NewContactUIState.ContactChanged
     }
-
-
 }

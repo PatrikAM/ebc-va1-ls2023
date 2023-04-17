@@ -79,10 +79,9 @@ fun NewContactScreenContent(
                     validate = true
                 }
             },
-            contact = data.contact,
+            data = data,
             actions = actions,
             validate = validate
         )
-
     }
 }

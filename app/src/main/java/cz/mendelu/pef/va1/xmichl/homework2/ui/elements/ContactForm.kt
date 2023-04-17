@@ -1,31 +1,26 @@
 package cz.mendelu.pef.va1.xmichl.homework2.ui.elements
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
 import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import cz.mendelu.pef.va1.xmichl.homework2.ui.screens.NewContactActions
+import cz.mendelu.pef.va1.xmichl.homework2.ui.screens.NewContactScreenData
 
 
 @Composable
 fun ContactForm(
     onSubmit: () -> Unit,
-    contact: Contact,
+    data: NewContactScreenData,
     actions: NewContactActions,
     validate: Boolean = false
 ) {
@@ -36,14 +31,22 @@ fun ContactForm(
         ContactType.WORK.toString()
     )
 
-    Column {
-        NameTF(contact = contact, actions = actions, validate = validate)
-        SurnameTF(contact = contact, actions = actions, validate = validate)
-        ContactTypeDM(contact = contact)
-        PhoneNumberTF(contact = contact, actions = actions, validate = validate)
-        EmailTF(contact = contact, actions = actions, validate = validate)
+    Column(
+        horizontalAlignment = CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+
+        NameTF(contact = data.contact, actions = actions, validate = validate)
+        SurnameTF(contact = data.contact, actions = actions, validate = validate)
+
+        ContactTypeDMOutlined(contact = data.contact)
+        PhoneNumberTF(contact = data.contact, actions = actions, validate = validate)
+        EmailTF(contact = data.contact, actions = actions, validate = validate)
         Button(
             onClick = onSubmit,
+            modifier = Modifier
+                .align(CenterHorizontally)
+                .padding(20.dp)
         ) {
             Text(text = "Save Contact")
         }
@@ -61,11 +64,13 @@ fun PhoneNumberTF(
         label = "* Phone Number",
         icon = Icons.Default.Call,
         onValueChange = {
-            actions.onContactChanged(contact)
-            contact.phone_number = it
+            if (it.matches(Regex("[0-9]{0,15}"))) {
+                actions.onContactChanged(contact)
+                contact.phone_number = it
+            }
         },
         error = if (contact.isPhoneNumberValid().or(validate.not())) ""
-        else "Phone Number is not valid."
+        else "Phone number consists of at least 7 digits."
     )
 }
 
@@ -126,35 +131,75 @@ fun EmailTF(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactTypeDM(contact: Contact) {
+fun ContactTypeDMOutlined(contact: Contact) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf(ContactType.PERSONAL.toString()) }
     val options = ContactType.values().toList()
         .map { contactType -> contactType.toString() }.toList()
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = true }
-            .semantics {
-                contentDescription = "Contact type"
-                role = Role.Button
-            }
-    ) {
-        Text(selectedOption, Modifier.padding(16.dp))
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
+    Column {
+        Box(
+            modifier = Modifier
+                .align(CenterHorizontally)
+                .fillMaxWidth(fraction = 0.9f)
+                .padding(top = 10.dp, bottom = 10.dp)
         ) {
-            options.forEach { option ->
-                DropdownMenuItem(onClick = {
-                    selectedOption = option
-                    contact.type = ContactType.values()
-                        .first { contactType -> contactType.toString() == selectedOption }
-                    expanded = false
-                }, text = { Text(text = option) })
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = {
+                    expanded = !expanded
+                }
+            ) {
+                OutlinedTextField(
+                    readOnly = true,
+                    value = selectedOption,
+                    label = { Text(text = "Contact Type") },
+                    onValueChange = { },
+                    //label = { Text("Work/Personal") },
+                    leadingIcon = {
+                        if (selectedOption == ContactType.PERSONAL.toString())
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = "Personal"
+                            )
+                        else
+                            Icon(
+                                imageVector = Icons.Default.Build,
+                                contentDescription = "Personal"
+                            )
+                    },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = expanded
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    modifier = Modifier
+                        .exposedDropdownSize(matchTextFieldWidth = true)
+                        .fillMaxWidth(),
+                    onDismissRequest = {
+                        expanded = false
+                    }
+                ) {
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                selectedOption = option
+                                contact.type = ContactType.values()
+                                    .first { contactType -> contactType.toString() == selectedOption }
+                                expanded = false
+                            })
+                    }
+                }
             }
         }
     }

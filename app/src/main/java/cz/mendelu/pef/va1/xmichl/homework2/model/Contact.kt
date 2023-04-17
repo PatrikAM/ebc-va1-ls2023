@@ -36,7 +36,7 @@ data class Contact(
     fun isSurnameValid(): Boolean = surname.isNotEmpty()
 
     fun isPhoneNumberValid(): Boolean {
-        val phoneRegex = Regex("^\\+?[0-9]{6,}$")
+        val phoneRegex = Regex("^\\+?[0-9]{7,15}$")
         return phoneRegex.matches(phone_number)
     }
 
