@@ -1,6 +1,7 @@
 package cz.mendelu.pef.va1.xmichl.homework2.ui.elements
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -15,18 +16,26 @@ fun BackArrowScreen(
     appBarTitle: String,
     onBackClick: () -> Unit,
     fullScreenContent: Boolean = false,
-    content: @Composable (paddingValues: PaddingValues) -> Unit
-){
-    Scaffold(topBar = {
-        TopAppBar(title = {
-            Text(text = appBarTitle)
+    actions: @Composable() (RowScope.() -> Unit),
+//    floatingActionButton: @Composable () -> Unit,
+    content: @Composable (paddingValues: PaddingValues) -> Unit,
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = appBarTitle)
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBackClick() }) {
+                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
+                    }
+                },
+                actions = actions,
+            )
         },
-            navigationIcon = {
-                IconButton(onClick = { onBackClick() }) {
-                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
-                }
-            })
-    }) {
+//        floatingActionButton = floatingActionButton
+    ) {
         if (!fullScreenContent) {
             LazyColumn(modifier = Modifier.padding(it)) {
                 item {

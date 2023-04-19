@@ -16,13 +16,17 @@ class NewContactViewModel(
     var data: NewContactScreenData = NewContactScreenData()
 
     override fun saveContact() {
-        launch {
-            val id = repository.insert(data.contact)
-            if (id > 0) {
-                newContactUIState.value = NewContactUIState.ContactSaved
-            } else {
-                // error
+        if (data.contact.isContactValid()) {
+            launch {
+                val id = repository.insert(data.contact)
+                if (id > 0) {
+                    newContactUIState.value = NewContactUIState.ContactSaved
+                } else {
+                    // error
+                }
             }
+        } else {
+            newContactUIState.value = NewContactUIState.ContactWasNotSaved
         }
     }
 

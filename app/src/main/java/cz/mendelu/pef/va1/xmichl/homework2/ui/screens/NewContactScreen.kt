@@ -1,8 +1,11 @@
 package cz.mendelu.pef.va1.xmichl.homework2.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
-import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.BackArrowScreen
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.ContactForm
@@ -16,6 +19,10 @@ fun NewContactScreen(
 
     var data: NewContactScreenData by remember {
         mutableStateOf(viewModel.data)
+    }
+
+    var validate: Boolean by remember {
+        mutableStateOf(false)
     }
 
     viewModel.newContactUIState.value.let {
@@ -33,52 +40,55 @@ fun NewContactScreen(
 
             }
             NewContactUIState.ContactWasNotSaved -> {
-
+                validate = true
             }
         }
     }
+
     BackArrowScreen(
         appBarTitle = "New Contact",
         onBackClick = {
             navigation.returnBack()
+        },
+        actions = {
+            IconButton(onClick = {
+//                if (data.contact.isContactValid())
+                    viewModel.saveContact()
+//                else
+//                    validate = true
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Save,
+                    contentDescription = "save"
+                )
+            }
         }
     ) {
         NewContactScreenContent(
-            navigation = navigation,
             data = data,
-            actions = viewModel
+            actions = viewModel,
+            validate = validate
         )
     }
 }
 
 @Composable
 fun NewContactScreenContent(
-    navigation: INavigationRouter,
     data: NewContactScreenData,
-    actions: NewContactActions
+    actions: NewContactActions,
+    validate: Boolean
 ) {
-    var phoneNumber = remember { mutableStateOf("") }
-    var selectedType by remember { mutableStateOf("") }
 
-    var validate by remember {
-        mutableStateOf(false)
-    }
-
-    //validate = false
-
-    val options = listOf(
-        ContactType.PERSONAL.toString(),
-        ContactType.WORK.toString()
-    )
     Column {
         ContactForm(
-            onSubmit = {
-                if (data.contact.isContactValid()) {
-                    actions.saveContact()
-                } else {
-                    validate = true
-                }
-            },
+            onSubmit = {},
+//            onSubmit = {
+//                if (data.contact.isContactValid()) {
+//                    actions.saveContact()
+//                } else {
+//                    validate = true
+//                }
+//            },
             data = data,
             actions = actions,
             validate = validate

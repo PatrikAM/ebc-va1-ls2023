@@ -28,7 +28,10 @@ fun LetterAvatar(letter: Char) {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(50.dp)
-            .background(colors.get(Random.nextInt(0, 5)), shape = CircleShape)
+            .background(
+                colors[Random.nextInt(0, colors.size-1)],
+                shape = CircleShape
+            )
     ) {
         Text(
             text = letter.toString(),

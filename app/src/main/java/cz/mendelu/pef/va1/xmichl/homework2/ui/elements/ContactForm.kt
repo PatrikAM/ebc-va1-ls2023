@@ -24,12 +24,6 @@ fun ContactForm(
     actions: NewContactActions,
     validate: Boolean = false
 ) {
-    var selectedType by remember { mutableStateOf("") }
-
-    val options = listOf(
-        ContactType.PERSONAL.toString(),
-        ContactType.WORK.toString()
-    )
 
     Column(
         horizontalAlignment = CenterHorizontally,
@@ -42,14 +36,16 @@ fun ContactForm(
         ContactTypeDMOutlined(contact = data.contact)
         PhoneNumberTF(contact = data.contact, actions = actions, validate = validate)
         EmailTF(contact = data.contact, actions = actions, validate = validate)
-        Button(
-            onClick = onSubmit,
-            modifier = Modifier
-                .align(CenterHorizontally)
-                .padding(20.dp)
-        ) {
-            Text(text = "Save Contact")
-        }
+
+//        Button(
+//            onClick = onSubmit,
+//            modifier = Modifier
+//                .align(CenterHorizontally)
+//                .padding(20.dp)
+//        ) {
+//            Text(text = "Save Contact")
+//        }
+
     }
 }
 
@@ -61,7 +57,7 @@ fun PhoneNumberTF(
 ) {
     NewContactTextField(
         value = contact.phone_number,
-        label = "* Phone Number",
+        label = "Phone Number",
         icon = Icons.Default.Call,
         onValueChange = {
             if (it.matches(Regex("[0-9]{0,15}"))) {
@@ -69,8 +65,10 @@ fun PhoneNumberTF(
                 contact.phone_number = it
             }
         },
-        error = if (contact.isPhoneNumberValid().or(validate.not())) ""
-        else "Phone number consists of at least 7 digits."
+        error = if (contact.isPhoneNumberValid().or(validate.not()))
+                    ""
+                else
+                    "Phone number consists of at least 7 digits."
     )
 }
 
@@ -82,7 +80,7 @@ fun NameTF(
 ) {
     NewContactTextField(
         value = contact.name,
-        label = "* Name",
+        label = "Name",
         icon = Icons.Default.Person,
         onValueChange = {
             actions.onContactChanged(contact)
@@ -101,7 +99,7 @@ fun SurnameTF(
 ) {
     NewContactTextField(
         value = contact.surname,
-        label = "* Surname",
+        label = "Surname",
         icon = Icons.Default.Person,
         onValueChange = {
             actions.onContactChanged(contact)
@@ -120,7 +118,7 @@ fun EmailTF(
 ) {
     NewContactTextField(
         value = contact.email,
-        label = "Email",
+        label = "Email (optional)",
         icon = Icons.Default.Email,
         onValueChange = {
             actions.onContactChanged(contact)
@@ -143,7 +141,7 @@ fun ContactTypeDMOutlined(contact: Contact) {
             modifier = Modifier
                 .align(CenterHorizontally)
                 .fillMaxWidth(fraction = 0.9f)
-                .padding(top = 10.dp, bottom = 10.dp)
+                .padding(top = 10.dp, bottom = 20.dp)
         ) {
             ExposedDropdownMenuBox(
                 expanded = expanded,
@@ -154,9 +152,9 @@ fun ContactTypeDMOutlined(contact: Contact) {
                 OutlinedTextField(
                     readOnly = true,
                     value = selectedOption,
-                    label = { Text(text = "Contact Type") },
+                    //label = { Text(text = "Contact Type") },
                     onValueChange = { },
-                    //label = { Text("Work/Personal") },
+                    label = { Text("Work/Personal") },
                     leadingIcon = {
                         if (selectedOption == ContactType.PERSONAL.toString())
                             Icon(
@@ -165,8 +163,8 @@ fun ContactTypeDMOutlined(contact: Contact) {
                             )
                         else
                             Icon(
-                                imageVector = Icons.Default.Build,
-                                contentDescription = "Personal"
+                                imageVector = Icons.Default.Work,
+                                contentDescription = "Work"
                             )
                     },
                     trailingIcon = {

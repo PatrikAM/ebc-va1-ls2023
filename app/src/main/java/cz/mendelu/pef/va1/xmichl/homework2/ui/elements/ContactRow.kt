@@ -10,11 +10,9 @@ import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
 @Composable
 fun ContactRow(contact: Contact) {
     ListItem(
-        headlineText = { Text("${contact.surname}, ${contact.name}") },
-        supportingText = { Text("${contact.phone_number}") },
-        overlineText = {  },
-        leadingContent = {
-            LetterAvatar(contact.name.get(0))
-        }
+        headlineText = { Text(text = "${contact.surname}, ${contact.name}") },
+        leadingContent = { LetterAvatar(contact.name[0]) },
+        overlineText = { },
+        supportingText = { Text(text = contact.phone_number) },
     )
 }
