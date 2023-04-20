@@ -52,10 +52,7 @@ fun NewContactScreen(
         },
         actions = {
             IconButton(onClick = {
-//                if (data.contact.isContactValid())
                     viewModel.saveContact()
-//                else
-//                    validate = true
             }) {
                 Icon(
                     imageVector = Icons.Default.Save,

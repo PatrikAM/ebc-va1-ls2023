@@ -8,7 +8,8 @@ class NewContactScreenData {
         name = "",
         surname = "",
         phone_number = "",
-        type = ContactType.PERSONAL,
+        type = ContactType.values().first(),
         email = ""
     )
+
 }

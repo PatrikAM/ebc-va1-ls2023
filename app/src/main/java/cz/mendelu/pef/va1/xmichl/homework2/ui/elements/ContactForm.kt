@@ -10,7 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cz.mendelu.pef.va1.xmichl.homework2.R
 import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
 import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import cz.mendelu.pef.va1.xmichl.homework2.ui.screens.NewContactActions
@@ -33,7 +35,7 @@ fun ContactForm(
         NameTF(contact = data.contact, actions = actions, validate = validate)
         SurnameTF(contact = data.contact, actions = actions, validate = validate)
 
-        ContactTypeDMOutlined(contact = data.contact)
+        ContactTypeDMOutlined(contact = data.contact, actions = actions)
         PhoneNumberTF(contact = data.contact, actions = actions, validate = validate)
         EmailTF(contact = data.contact, actions = actions, validate = validate)
 
@@ -57,18 +59,19 @@ fun PhoneNumberTF(
 ) {
     NewContactTextField(
         value = contact.phone_number,
-        label = "Phone Number",
+        label = stringResource(R.string.phoneNumerLabel),
         icon = Icons.Default.Call,
         onValueChange = {
-            if (it.matches(Regex("[0-9]{0,15}"))) {
-                actions.onContactChanged(contact)
-                contact.phone_number = it
-            }
+            actions.onPhoneNumberChanged(it)
+//            if (it.matches(Regex("[0-9]{0,15}"))) {
+//                actions.onContactChanged(contact)
+//                contact.phone_number = it
+//            }
         },
         error = if (contact.isPhoneNumberValid().or(validate.not()))
-                    ""
-                else
-                    "Phone number consists of at least 7 digits."
+            ""
+        else
+            stringResource(R.string.phoneNumebrError)
     )
 }
 
@@ -80,14 +83,15 @@ fun NameTF(
 ) {
     NewContactTextField(
         value = contact.name,
-        label = "Name",
+        label = stringResource(R.string.nameLabel),
         icon = Icons.Default.Person,
         onValueChange = {
-            actions.onContactChanged(contact)
-            contact.name = it
+            actions.onNameChanged(it)
+//            actions.onContactChanged(contact)
+//            contact.name = it
         },
         error = if (contact.isNameValid().or(validate.not())) ""
-        else "Name can not be empty."
+        else stringResource(R.string.nameError)
     )
 }
 
@@ -99,14 +103,15 @@ fun SurnameTF(
 ) {
     NewContactTextField(
         value = contact.surname,
-        label = "Surname",
+        label = stringResource(R.string.surnameLabel),
         icon = Icons.Default.Person,
         onValueChange = {
-            actions.onContactChanged(contact)
-            contact.surname = it
+            actions.onSurnameChanged(it)
+//            actions.onContactChanged(contact)
+//            contact.surname = it
         },
         error = if (contact.isSurnameValid().or(validate.not())) ""
-        else "Surname can not be empty."
+        else stringResource(R.string.surnameError)
     )
 }
 
@@ -118,22 +123,25 @@ fun EmailTF(
 ) {
     NewContactTextField(
         value = contact.email,
-        label = "Email (optional)",
+        label = stringResource(R.string.emailOptionalLabel),
         icon = Icons.Default.Email,
         onValueChange = {
-            actions.onContactChanged(contact)
-            contact.email = it
+            actions.onEmailChanged(it)
+//            actions.onContactChanged(contact)
+//            contact.email = it
         },
         error = if (contact.isEmailValid().or(validate.not())) ""
-        else "Email is not valid."
+        else stringResource(R.string.emailError)
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactTypeDMOutlined(contact: Contact) {
+fun ContactTypeDMOutlined(
+    contact: Contact,
+    actions: NewContactActions,
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf(ContactType.PERSONAL.toString()) }
     val options = ContactType.values().toList()
         .map { contactType -> contactType.toString() }.toList()
     Column {
@@ -151,12 +159,12 @@ fun ContactTypeDMOutlined(contact: Contact) {
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = selectedOption,
+                    value = contact.type.toString(),
                     //label = { Text(text = "Contact Type") },
                     onValueChange = { },
-                    label = { Text("Work/Personal") },
+                    label = { Text(stringResource(R.string.ContactTypeLabel)) },
                     leadingIcon = {
-                        if (selectedOption == ContactType.PERSONAL.toString())
+                        if (contact.type.toString() == ContactType.PERSONAL.toString())
                             Icon(
                                 imageVector = Icons.Default.Home,
                                 contentDescription = "Personal"
@@ -189,11 +197,14 @@ fun ContactTypeDMOutlined(contact: Contact) {
                     options.forEach { option ->
                         DropdownMenuItem(
                             text = { Text(text = option) },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(0.9f),
                             onClick = {
-                                selectedOption = option
-                                contact.type = ContactType.values()
-                                    .first { contactType -> contactType.toString() == selectedOption }
+                                actions.onContactTypeChanged(option)
+//                                selectedOption = option
+//                                contact.type = ContactType.values()
+//                                    .first { contactType ->
+//                                        contactType.toString() == selectedOption
+//                                    }
                                 expanded = false
                             })
                     }

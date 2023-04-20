@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import cz.mendelu.pef.va1.xmichl.homework2.architecture.BaseViewModel
 import cz.mendelu.pef.va1.xmichl.homework2.database.IContactsRepository
 import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
+import cz.mendelu.pef.va1.xmichl.homework2.model.ContactType
 import kotlinx.coroutines.launch
 
 class NewContactViewModel(
@@ -34,4 +35,32 @@ class NewContactViewModel(
         data.contact = contact
         newContactUIState.value = NewContactUIState.ContactChanged
     }
+
+    override fun onPhoneNumberChanged(phoneNumber: String) {
+        if (phoneNumber.matches(Regex("[0-9]{0,15}"))) {
+            data.contact.phone_number = phoneNumber
+            newContactUIState.value = NewContactUIState.ContactChanged
+        }
+    }
+
+    override fun onNameChanged(name: String) {
+        data.contact.name = name
+        newContactUIState.value = NewContactUIState.ContactChanged
+    }
+
+    override fun onSurnameChanged(surname: String) {
+        data.contact.surname = surname
+        newContactUIState.value = NewContactUIState.ContactChanged
+    }
+
+    override fun onContactTypeChanged(type: String) {
+        data.contact.type = ContactType.valueOf(type)
+        newContactUIState.value = NewContactUIState.ContactChanged
+    }
+
+    override fun onEmailChanged(email: String) {
+        data.contact.email = email
+        newContactUIState.value = NewContactUIState.ContactChanged
+    }
+
 }

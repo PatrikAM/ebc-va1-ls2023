@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Contacts</string>
+    <string name="ContactTypeLabel">Work/Personal</string>
+    <string name="emailOptionalLabel">Email (optional)</string>
+    <string name="emailError">Email is not valid.</string>
+    <string name="surnameError">Surname can not be empty.</string>
+    <string name="surnameLabel">Surname</string>
+    <string name="nameLabel">Name</string>
+    <string name="nameError">Name can not be empty.</string>
+    <string name="phoneNumebrError">Phone number consists of at least 7 digits.</string>
+    <string name="phoneNumerLabel">Phone Number</string>
 </resources>
