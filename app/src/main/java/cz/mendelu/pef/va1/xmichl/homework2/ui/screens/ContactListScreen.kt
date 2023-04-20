@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import cz.mendelu.pef.va1.xmichl.homework2.R
 import cz.mendelu.pef.va1.xmichl.homework2.model.Contact
 import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.ContactRow
@@ -39,7 +41,7 @@ fun ContactListScreen(
     Scaffold(
         topBar = {
             TopAppBar(title = {
-                Text(text = "Contacts")
+                Text(text = stringResource(R.string.contactListScreenTitle))
             })
         },
         floatingActionButton = {

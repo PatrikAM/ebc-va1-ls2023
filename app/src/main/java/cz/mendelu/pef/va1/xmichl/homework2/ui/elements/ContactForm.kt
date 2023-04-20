@@ -59,7 +59,7 @@ fun PhoneNumberTF(
 ) {
     ContactTextField(
         value = contact.phone_number,
-        label = stringResource(R.string.phoneNumerLabel),
+        label = stringResource(R.string.phoneNumberLabel),
         icon = Icons.Default.Call,
         onValueChange = {
             actions.onPhoneNumberChanged(it)
@@ -72,7 +72,7 @@ fun PhoneNumberTF(
         error = if (contact.isPhoneNumberValid().or(validate.not()))
             ""
         else
-            stringResource(R.string.phoneNumebrError)
+            stringResource(R.string.phoneNumberError)
     )
 }
 

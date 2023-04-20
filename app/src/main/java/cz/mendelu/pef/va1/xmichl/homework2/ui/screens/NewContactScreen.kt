@@ -6,6 +6,8 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
+import cz.mendelu.pef.va1.xmichl.homework2.R
 import cz.mendelu.pef.va1.xmichl.homework2.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.BackArrowScreen
 import cz.mendelu.pef.va1.xmichl.homework2.ui.elements.ContactForm
@@ -46,7 +48,7 @@ fun NewContactScreen(
     }
 
     BackArrowScreen(
-        appBarTitle = "New Contact",
+        appBarTitle = stringResource(R.string.NewContactScreenTitle),
         onBackClick = {
             navigation.returnBack()
         },

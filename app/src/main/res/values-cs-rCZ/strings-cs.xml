@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kontakty</string>
+    <string name="ContactTypeLabel">Pracovní/Soukromý</string>
+    <string name="emailOptionalLabel">Email (nepovinný)</string>
+    <string name="emailError">Email je nepsrávný.</string>
+    <string name="surnameError">Příjmení nemůže být prázdné.</string>
+    <string name="surnameLabel">Příjmení</string>
+    <string name="nameLabel">Jméno</string>
+    <string name="nameError">Jméno nemůže být prázdné.</string>
+    <string name="phoneNumberError">Telefonní číslo musí být dlouhé alespoň 7 znaků.</string>
+    <string name="phoneNumberLabel">Telefonní číslo</string>
+    <string name="contactListScreenTitle">Kontakty</string>
+    <string name="NewContactScreenTitle">Nový kontakt</string>
+</resources>

@@ -7,6 +7,8 @@
     <string name="surnameLabel">Surname</string>
     <string name="nameLabel">Name</string>
     <string name="nameError">Name can not be empty.</string>
-    <string name="phoneNumebrError">Phone number consists of at least 7 digits.</string>
-    <string name="phoneNumerLabel">Phone Number</string>
+    <string name="phoneNumberError">Phone number consists of at least 7 digits.</string>
+    <string name="phoneNumberLabel">Phone Number</string>
+    <string name="contactListScreenTitle">Contacts</string>
+    <string name="NewContactScreenTitle">New Contact</string>
 </resources>
