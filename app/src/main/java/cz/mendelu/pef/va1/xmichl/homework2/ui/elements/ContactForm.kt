@@ -57,7 +57,7 @@ fun PhoneNumberTF(
     actions: NewContactActions,
     validate: Boolean = false
 ) {
-    NewContactTextField(
+    ContactTextField(
         value = contact.phone_number,
         label = stringResource(R.string.phoneNumerLabel),
         icon = Icons.Default.Call,
@@ -68,6 +68,7 @@ fun PhoneNumberTF(
 //                contact.phone_number = it
 //            }
         },
+        numberInput = true,
         error = if (contact.isPhoneNumberValid().or(validate.not()))
             ""
         else
@@ -81,7 +82,7 @@ fun NameTF(
     actions: NewContactActions,
     validate: Boolean = false
 ) {
-    NewContactTextField(
+    ContactTextField(
         value = contact.name,
         label = stringResource(R.string.nameLabel),
         icon = Icons.Default.Person,
@@ -101,7 +102,7 @@ fun SurnameTF(
     actions: NewContactActions,
     validate: Boolean = false
 ) {
-    NewContactTextField(
+    ContactTextField(
         value = contact.surname,
         label = stringResource(R.string.surnameLabel),
         icon = Icons.Default.Person,
@@ -121,7 +122,7 @@ fun EmailTF(
     actions: NewContactActions,
     validate: Boolean = false
 ) {
-    NewContactTextField(
+    ContactTextField(
         value = contact.email,
         label = stringResource(R.string.emailOptionalLabel),
         icon = Icons.Default.Email,
