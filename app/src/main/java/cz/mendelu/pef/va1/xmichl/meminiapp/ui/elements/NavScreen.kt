@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,6 +22,7 @@ fun NavScreen(
     onBackClick: () -> Unit,
     fullScreenContent: Boolean = false,
     //actions: @Composable() (RowScope.() -> Unit),
+    backArrowNeeded: Boolean = false,
     route: String,
     content: @Composable (paddingValues: PaddingValues) -> Unit,
 
@@ -37,13 +39,22 @@ fun NavScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = appBarTitle)
+                    Text(
+                        text = appBarTitle,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { onBackClick() }) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
+                    if (backArrowNeeded) {
+                        IconButton(onClick = { onBackClick() }) {
+                            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "")
+                        }
                     }
                 },
+                actions = {
+                    Avatar()
+                }
                 //actions = actions,
             )
         },

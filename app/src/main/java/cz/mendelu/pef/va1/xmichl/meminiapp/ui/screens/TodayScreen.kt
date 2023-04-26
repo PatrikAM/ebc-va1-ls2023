@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.NavScreen
 
 @Composable
-fun TimeLineScreen() {
+fun TodayScreen() {
     NavScreen(
-        appBarTitle = "My memories",
+        appBarTitle = "On this day",
         onBackClick = {},
         fullScreenContent = false,
-        route = "timeline"
+        route = "today"
     ) {
         //Greeting(name = "Android")
     }
