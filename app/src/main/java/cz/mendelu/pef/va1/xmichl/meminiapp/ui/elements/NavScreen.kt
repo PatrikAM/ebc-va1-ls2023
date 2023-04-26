@@ -22,12 +22,13 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 @Composable
 fun NavScreen(
     appBarTitle: String,
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit = {},
     fullScreenContent: Boolean = false,
     //actions: @Composable() (RowScope.() -> Unit),
     backArrowNeeded: Boolean = false,
     destination: Destination,
     navigation: INavigationRouter,
+    floatingActionButton: @Composable() (() -> Unit) = {},
     content: @Composable (paddingValues: PaddingValues) -> Unit,
 
     ) {
@@ -65,7 +66,7 @@ fun NavScreen(
         bottomBar = {
             NavigationBar {
                 navItems.forEach { navItem ->
-                    BottomNavigationItem(
+                    NavigationBarItem (
                         icon = { Icon(imageVector = navItem.icon, contentDescription = "hello") },
                         label = {
                             if (destination == navItem.destination) {
@@ -76,12 +77,16 @@ fun NavScreen(
                         },
                         selected = destination == navItem.destination,
                         onClick = {
-                            navigation.getNavController().navigate(navItem.destination.route)
-                        }
+                            if (destination != navItem.destination) {
+                                navigation.getNavController().navigate(navItem.destination.route)
+                            }
+                        },
+                        alwaysShowLabel = false
                     )
                 }
             }
-        }
+        },
+        floatingActionButton = floatingActionButton
     ) {
         if (!fullScreenContent) {
             LazyColumn(modifier = Modifier.padding(it)) {

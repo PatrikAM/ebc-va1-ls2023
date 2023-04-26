@@ -6,10 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.SearchScreen
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.SplashScreen
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.TimeLineScreen
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.TodayScreen
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.*
 
 @Composable
 fun NavGraph(
@@ -37,6 +34,10 @@ fun NavGraph(
 
         composable(Destination.SplashScreen.route) {
             SplashScreen(navigation)
+        }
+
+        composable(Destination.AddEditMemoryScreen.route) {
+            AddEditMemoryScreen(navigation)
         }
     }
 }

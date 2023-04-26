@@ -25,7 +25,18 @@ class NavigationRouterImpl(
     override fun navigateToTodayScreen() {
         navController.navigate(
             Destination.TodayScreen.route
-        )    }
+        )
+    }
+
+    override fun navigateAddEditMemoryScreen() {
+        navController.navigate(
+            Destination.AddEditMemoryScreen.route
+        )
+    }
+
+    override fun navigateToMemoryDetailScreen() {
+        TODO("Not yet implemented")
+    }
 
     override fun getNavController():
             NavController = navController

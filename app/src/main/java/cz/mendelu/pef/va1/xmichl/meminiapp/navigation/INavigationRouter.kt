@@ -7,5 +7,7 @@ interface INavigationRouter {
     fun navigateToSearchScreen()
     fun navigateToTimeLineScreen()
     fun navigateToTodayScreen()
+    fun navigateAddEditMemoryScreen()
+    fun navigateToMemoryDetailScreen()
     fun getNavController(): NavController
 }

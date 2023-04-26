@@ -5,4 +5,6 @@ sealed class Destination(val route: String) {
     object SearchScreen : Destination(route = "search")
     object TodayScreen : Destination(route = "today")
     object SplashScreen : Destination(route = "splash")
+    object MemoryDetailScreen : Destination(route = "detail")
+    object AddEditMemoryScreen : Destination(route = "addedit")
 }

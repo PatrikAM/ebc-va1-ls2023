@@ -15,5 +15,6 @@ fun Avatar() {
             imageVector = Icons.Outlined.AccountCircle,
             contentDescription = "avatar",
             )
+        Menu()
     }
 }
