@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MeminiApp</string>
+    <string name="timelineNavLabel">Timeline</string>
+    <string name="todayNavLabel">Today</string>
+    <string name="mapNavLabel">Map</string>
+    <string name="searchNavLabel">Search</string>
+    <string name="settingsNavLabel"><![CDATA[Settings&About]]></string>
 </resources>
