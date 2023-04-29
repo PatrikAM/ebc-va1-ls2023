@@ -5,4 +5,5 @@
     <string name="mapNavLabel">Map</string>
     <string name="searchNavLabel">Search</string>
     <string name="settingsNavLabel"><![CDATA[Settings&About]]></string>
+    <string name="date">Date</string>
 </resources>
