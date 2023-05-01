@@ -5,20 +5,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.ManageAccounts
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun Menu() {
     var expanded by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.TopStart)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.TopStart)) {
         IconButton(onClick = { expanded = true }) {
             Icon(Icons.Default.MoreVert, contentDescription = "Localized description")
         }
@@ -27,11 +28,11 @@ fun Menu() {
             onDismissRequest = { expanded = false }
         ) {
             DropdownMenuItem(
-                text = { Text("Edit") },
+                text = { Text("Edit Profile") },
                 onClick = { /* Handle edit! */ },
                 leadingIcon = {
                     Icon(
-                        Icons.Outlined.Edit,
+                        Icons.Outlined.ManageAccounts,
                         contentDescription = null
                     )
                 })
@@ -54,7 +55,8 @@ fun Menu() {
                         contentDescription = null
                     )
                 },
-                trailingIcon = { Text("F11", textAlign = TextAlign.Center) })
+                //trailingIcon = { Text("F11", textAlign = TextAlign.Center) }
+            )
         }
     }
 }

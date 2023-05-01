@@ -1,9 +1,6 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.models
 
-import android.graphics.Bitmap
-import android.location.Location
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -13,23 +10,25 @@ data class Memory(
     var title: String,
 
     @ColumnInfo(name = "primary_photo")
-    var primaryPhoto: Bitmap,
+    var primaryPhoto: ByteArray?,
 
-    @ColumnInfo(name = "primary_photo")
-    var photo1: Bitmap?,
+    @ColumnInfo(name = "second_photo")
+    var photo1: ByteArray?,
 
-    @ColumnInfo(name = "primary_photo")
-    var photo2: Bitmap?,
+    @ColumnInfo(name = "third_photo")
+    var photo2: ByteArray?,
 
     @ColumnInfo(name = "description")
     var description: String?,
 
     @ColumnInfo(name = "date")
-    var date: Long,
+    var date: Long?,
 
-    @Embedded
-    @ColumnInfo(name = "location")
-    var location: Location?,
+    @ColumnInfo(name = "longitude")
+    var longitude: Double?,
+
+    @ColumnInfo(name = "latitude")
+    var latitude: Double?,
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id")

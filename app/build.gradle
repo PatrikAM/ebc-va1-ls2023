@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation 'androidx.databinding:adapters:3.2.0-alpha11'
 
     // Testy
     testImplementation 'junit:junit:4.13.2'

@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Title
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,7 +39,7 @@ fun SearchScreen(
         NavScreen(
             appBarTitle = "Search memories",
             onBackClick = {},
-            columnContent = false,
+            //columnContent = false,
             destination = Destination.SearchScreen,
             navigation = navigation,
             floatingActionButton = {
@@ -65,6 +67,10 @@ fun SearchScreen(
                         isInSelectSate.value = true
                     }) {
 
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Search")
                 }
 
 

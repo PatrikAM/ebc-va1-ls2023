@@ -1,4 +1,4 @@
-package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.memoryList;
+package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.memoryList
 
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
 

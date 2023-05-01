@@ -1,13 +1,20 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CalendarViewDay
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -65,7 +72,7 @@ fun NavScreen(
         bottomBar = {
             NavigationBar {
                 navItems.forEach { navItem ->
-                    NavigationBarItem (
+                    NavigationBarItem(
                         icon = { Icon(imageVector = navItem.icon, contentDescription = "hello") },
                         label = {
                             if (destination == navItem.destination) {
@@ -88,14 +95,19 @@ fun NavScreen(
         floatingActionButton = floatingActionButton
     ) {
         if (!columnContent) {
-            LazyColumn(modifier = Modifier.padding(it)) {
+            LazyColumn(
+                modifier = Modifier.padding(it).fillMaxSize(),
+                horizontalAlignment = CenterHorizontally,
+            ) {
                 item {
                     content(it)
                 }
             }
         } else {
             Box(
-                modifier = Modifier.padding(it).fillMaxSize(),
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 content(it)
@@ -108,6 +120,7 @@ fun NavScreen(
 enum class NavItem(val destination: Destination, @StringRes val title: Int, val icon: ImageVector) {
     TimeLine(Destination.TimeLineScreen, R.string.timelineNavLabel, Icons.Default.CalendarViewDay),
     Today(Destination.TodayScreen, R.string.todayNavLabel, Icons.Default.Today),
+
     //Map("map", R.string.mapNavLabel, Icons.Default.Map),
     Search(Destination.SearchScreen, R.string.searchNavLabel, Icons.Default.Search),
     //Settings("settings", R.string.settingsNavLabel, Icons.Default.Settings),

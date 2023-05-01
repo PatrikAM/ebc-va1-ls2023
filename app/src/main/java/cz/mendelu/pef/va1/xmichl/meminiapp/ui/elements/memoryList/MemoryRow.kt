@@ -8,14 +8,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MemoryRow() {
+fun MemoryRow(
+    memory: Memory
+) {
     Row {
         ListItem(
             headlineText = {
-                Text(text = "Memory Title")
+                Text(text = memory.title)
             },
             leadingContent = {
                 Icon(
@@ -24,7 +28,7 @@ fun MemoryRow() {
                 )
             },
             supportingText = {
-                Text(text = "date")
+                Text(text = Date(memory.date).toString())
             }
         )
     }

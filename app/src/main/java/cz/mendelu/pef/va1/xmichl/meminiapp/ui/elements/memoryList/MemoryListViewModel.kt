@@ -17,9 +17,9 @@ class MemoryListViewModel(
 
     fun loadMemories(){
         launch {
-//            repository.getAll().collect {
-//                memoryListUIState.value = MemoryListUIState.Success(it)
-//            }
+            repository.getAll().collect {
+                memoryListUIState.value = MemoryListUIState.Success(it)
+            }
         }
     }
 

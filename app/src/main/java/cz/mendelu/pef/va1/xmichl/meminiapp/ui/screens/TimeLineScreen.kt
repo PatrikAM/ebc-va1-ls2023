@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.AddEditMemoryFAB
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.memoryList.MemoryList
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.memoryList.MemoryRow
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
 
@@ -21,7 +22,7 @@ fun TimeLineScreen(
             AddEditMemoryFAB(navigation = navigation)
         }
     ) {
-        MemoryRow()
+        MemoryList()
         //Greeting(name = "Android")
     }
 }
