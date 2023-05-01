@@ -8,7 +8,7 @@ class AddEditMemoryData {
 class AddEditScreenData {
     var memory: Memory = Memory(
         title = "",
-        date = null,
+        date = System.currentTimeMillis(),
         primaryPhoto = null,
         photo1 = null,
         photo2 = null,

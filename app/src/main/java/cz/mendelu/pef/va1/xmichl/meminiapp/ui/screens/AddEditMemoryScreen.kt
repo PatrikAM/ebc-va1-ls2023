@@ -1,5 +1,8 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
+import android.app.DatePickerDialog
+import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -12,14 +15,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.InfoElement
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyTextfield
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
+import cz.mendelu.pef.va1.xmichl.meminiapp.utils.DateUtils
 import org.koin.androidx.compose.getViewModel
+import java.util.*
 
 @Composable
 fun AddEditMemoryScreen(
@@ -36,11 +44,11 @@ fun AddEditMemoryScreen(
 
 
     viewModel.addEditMemoryUIState.value.let {
-        when(it){
+        when (it) {
             AddEditScreenUIState.Loading -> {
                 viewModel.initMemory()
             }
-            AddEditScreenUIState.Default -> { }
+            AddEditScreenUIState.Default -> {}
             AddEditScreenUIState.Loading -> TODO()
             AddEditScreenUIState.MemoryChanged -> {
                 data = viewModel.data
@@ -64,6 +72,20 @@ fun AddEditMemoryScreen(
             navigation.returnBack()
         }
     ) {
+        AddEditScreenContent(
+            actions = viewModel,
+            data = data
+        )
+    }
+}
+
+@Composable
+fun AddEditScreenContent(
+    actions: AddEditMemoryActions,
+    data: AddEditScreenData
+
+) {
+    if (!data.loading) {
         Column(
             modifier = Modifier.fillMaxSize(0.9f),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -88,43 +110,85 @@ fun AddEditMemoryScreen(
                     )
                 }
             }
+
+
             //Spacer(modifier = Modifier.height(20.dp))
             //Divider(thickness = 2.dp)
             Spacer(modifier = Modifier.height(50.dp))
             MyTextfield(
                 value = data.memory.title,
                 onValueChange = {
-                                viewModel.onTitleChanged(it)
+                    actions.onTitleChanged(it)
                 },
                 leadingIcon = Icons.Default.Title,
-                label = "Title"
+                label = "Title",
+                onClearClick = {
+                    actions.onTitleChanged("")
+//                    data.memory.title = ""
+                }
             )
-            MyTextfield(
-                value = "",
-                onValueChange = {},
+
+            val calendar = Calendar.getInstance()
+            data.memory.date.let {
+                calendar.timeInMillis = it
+            }
+
+            val y = calendar.get(Calendar.YEAR)
+            val m = calendar.get(Calendar.MONTH)
+            val d = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                LocalContext.current,
+                { dialog: DatePicker, year: Int, month: Int, day: Int ->
+                    actions.onDateChanged(DateUtils.getUnixTime(year, month, day))
+                },
+                y,
+                m,
+                d
+
+            )
+
+            InfoElement(
+                value = DateUtils.getDateString(data.memory.date),
+                label = stringResource(R.string.date),
                 leadingIcon = Icons.Default.Today,
-                label = "Date"
+                onClick = {
+                    datePickerDialog.show()
+                },
+                showClearIcon = false
             )
+
             MyTextfield(
                 value = "",
                 onValueChange = {},
                 leadingIcon = Icons.Default.LocationOn,
-                label = "Place"
+                label = "Place",
+                onClearClick = {}
             )
-            data.memory.description?.let { it1 ->
-                MyTextfield(
-                    value = it1,
-                    onValueChange = {},
-                    leadingIcon = Icons.Default.Notes,
-                    label = "Description"
-                )
-            }
+
+            MyTextfield(
+                value = if (data.memory.description != null)
+                    data.memory.description!! else "",
+                onValueChange = {
+                    actions.onDescriptionChanged(it)
+                },
+                leadingIcon = Icons.Default.Notes,
+                label = "Description",
+                onClearClick = {
+//                    data.memory.description = null
+                    actions.onDescriptionChanged(null)
+                }
+            )
+
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                onClick = { viewModel.saveMemory() }
+                onClick = { actions.saveMemory() }
             ) {
                 Text(text = "Save")
             }
         }
+    } else {
+        // todo loading screen
     }
+
 }

@@ -11,6 +11,9 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository)
 
     var memoryId: Long? = null
     var data: AddEditScreenData = AddEditScreenData()
+    var dateEror: Int? = null
+    var titleError: Int? = null
+    var primaryPhotoError: Int? = null
 
 
     val addEditMemoryUIState: MutableState<AddEditScreenUIState> =
@@ -43,7 +46,7 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository)
         addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
     }
 
-    override fun onDateChanged(date: Long?) {
+    override fun onDateChanged(date: Long) {
         data.memory.date = date
         addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
     }
@@ -61,7 +64,8 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository)
         }
     }
 
-    override fun onDescriptionChanged(desc: String) {
+    override fun onDescriptionChanged(desc: String?) {
         data.memory.description = desc
+        addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
     }
 }

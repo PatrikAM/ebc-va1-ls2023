@@ -22,7 +22,7 @@ data class Memory(
     var description: String?,
 
     @ColumnInfo(name = "date")
-    var date: Long?,
+    var date: Long,
 
     @ColumnInfo(name = "longitude")
     var longitude: Double?,

@@ -57,6 +57,7 @@ fun SearchScreen(
                     onValueChange = {},
                     leadingIcon = Icons.Default.Title,
                     label = "Memory name",
+                    onClearClick = {}
                 )
 
                 InfoElement(

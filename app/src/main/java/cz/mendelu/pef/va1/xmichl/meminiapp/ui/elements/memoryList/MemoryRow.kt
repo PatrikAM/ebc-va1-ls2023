@@ -9,6 +9,7 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
+import cz.mendelu.pef.va1.xmichl.meminiapp.utils.DateUtils
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,8 +29,8 @@ fun MemoryRow(
                 )
             },
             supportingText = {
-//                Text(text = Date(memory.date).toString())
-                Text(text = "date")
+                Text(text = DateUtils.getDateString(memory.date))
+//                Text(text = "date")
             }
         )
     }

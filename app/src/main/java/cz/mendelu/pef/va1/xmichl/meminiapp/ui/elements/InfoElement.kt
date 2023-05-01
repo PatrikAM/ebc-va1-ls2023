@@ -23,7 +23,9 @@ fun InfoElement(
     label: String,
     leadingIcon: ImageVector,
     onClick: () -> Unit,
-    onClearClick: () -> Unit,
+    showClearIcon: Boolean = true,
+    onClearClick: () -> Unit = {},
+
 ) {
 
     val interactionSource = remember {
@@ -49,7 +51,7 @@ fun InfoElement(
                 contentDescription = null)
         },
         trailingIcon = {
-            if (value != null) {
+            if (value != null && showClearIcon) {
                 IconButton(onClick = {
                     onClearClick()
                     focusManager.clearFocus()
