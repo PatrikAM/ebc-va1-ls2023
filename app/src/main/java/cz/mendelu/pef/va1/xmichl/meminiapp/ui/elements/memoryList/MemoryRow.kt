@@ -28,7 +28,8 @@ fun MemoryRow(
                 )
             },
             supportingText = {
-                Text(text = Date(memory.date).toString())
+//                Text(text = Date(memory.date).toString())
+                Text(text = "date")
             }
         )
     }

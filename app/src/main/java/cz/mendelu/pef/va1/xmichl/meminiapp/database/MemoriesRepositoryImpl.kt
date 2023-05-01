@@ -11,14 +11,19 @@ class MemoriesRepositoryImpl(private val dao: MemoriesDao)
     }
 
     override suspend fun insert(memory: Memory): Long {
-        TODO("Not yet implemented")
+        return dao.insert(memory)
     }
 
     override suspend fun getMemoryById(id: Long): Memory {
-        TODO("Not yet implemented")
+        return dao.getMemoryById(id)
     }
 
     override suspend fun update(memory: Memory) {
-        TODO("Not yet implemented")
+        dao.update(memory)
     }
+
+    override suspend fun getMemoriesByDate(date: Long): Flow<List<Memory>> {
+        return dao.getMemoriesByDate(date)
+    }
+
 }

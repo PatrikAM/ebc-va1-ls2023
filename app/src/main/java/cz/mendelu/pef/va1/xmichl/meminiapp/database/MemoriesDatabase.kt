@@ -9,7 +9,7 @@ import androidx.room.TypeConverters
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
 //@TypeConverters(Converters::class)
 
-@Database(entities = [Memory::class], version = 2, exportSchema = true)
+@Database(entities = [Memory::class], version = 3, exportSchema = true)
 abstract class MemoriesDatabase : RoomDatabase() {
 
     abstract fun memoriesDao(): MemoriesDao

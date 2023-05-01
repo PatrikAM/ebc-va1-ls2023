@@ -21,4 +21,7 @@ interface MemoriesDao {
     @Update
     suspend fun update(memory: Memory)
 
+    @Query("SELECT * FROM memories WHERE date = :date")
+    suspend fun getMemoriesByDate(date: Long): Flow<List<Memory>>
+
 }
