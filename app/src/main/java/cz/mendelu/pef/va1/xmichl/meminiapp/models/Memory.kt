@@ -10,13 +10,13 @@ data class Memory(
     var title: String,
 
     @ColumnInfo(name = "primary_photo")
-    var primaryPhoto: ByteArray?,
+    var primaryPhoto: String,
 
     @ColumnInfo(name = "second_photo")
-    var photo1: ByteArray?,
+    var photo1: String?,
 
     @ColumnInfo(name = "third_photo")
-    var photo2: ByteArray?,
+    var photo2: String?,
 
     @ColumnInfo(name = "description")
     var description: String?,
@@ -33,4 +33,8 @@ data class Memory(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo("id")
     var id: Long? = null
+
+    fun hasLocation(): Boolean =
+        latitude != null && longitude != null
+
 }

@@ -52,7 +52,7 @@ fun MyTextfield(
             )
         },
         label = {
-            Text(text = label) //TODO: extract to resources string
+            Text(text = label)
         },
         modifier = Modifier.fillMaxSize()
     )

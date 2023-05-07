@@ -29,7 +29,7 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.Avatar
 fun NavScreen(
     appBarTitle: String,
     onBackClick: () -> Unit = {},
-    columnContent: Boolean = false,
+    boxContent: Boolean = false,
     //actions: @Composable() (RowScope.() -> Unit),
     backArrowNeeded: Boolean = false,
     destination: Destination,
@@ -94,7 +94,7 @@ fun NavScreen(
         },
         floatingActionButton = floatingActionButton
     ) {
-        if (!columnContent) {
+        if (!boxContent) {
             LazyColumn(
                 modifier = Modifier.padding(it).fillMaxSize(),
                 horizontalAlignment = CenterHorizontally,

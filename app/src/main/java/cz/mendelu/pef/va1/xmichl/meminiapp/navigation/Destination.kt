@@ -7,4 +7,5 @@ sealed class Destination(val route: String) {
     object SplashScreen : Destination(route = "splash")
     object MemoryDetailScreen : Destination(route = "detail")
     object AddEditMemoryScreen : Destination(route = "addedit")
+    object MapScreen : Destination(route = "map")
 }

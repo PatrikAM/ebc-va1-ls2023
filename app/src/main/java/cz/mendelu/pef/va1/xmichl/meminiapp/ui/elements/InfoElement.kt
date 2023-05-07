@@ -51,14 +51,15 @@ fun InfoElement(
                 contentDescription = null)
         },
         trailingIcon = {
-            if (value != null && showClearIcon) {
+            if (value != null && value != "" && showClearIcon) {
                 IconButton(onClick = {
-                    onClearClick()
                     focusManager.clearFocus()
+                    onClearClick()
                 }) {
                     Icon(
-                        painter = rememberVectorPainter(image = Icons.Default
-                            .Clear),
+                        painter = rememberVectorPainter(
+                            image = Icons.Default.Clear
+                        ),
                         contentDescription = null)
                 }
             }

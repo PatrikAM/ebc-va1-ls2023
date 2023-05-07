@@ -12,7 +12,7 @@ fun TodayScreen(navigation: INavigationRouter) {
     NavScreen(
         appBarTitle = "On this day",
         onBackClick = {},
-        columnContent = false,
+        boxContent = false,
         destination = Destination.TodayScreen,
         navigation = navigation,
         floatingActionButton = {

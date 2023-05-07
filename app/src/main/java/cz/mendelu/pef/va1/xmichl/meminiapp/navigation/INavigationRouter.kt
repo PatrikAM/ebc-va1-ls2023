@@ -9,5 +9,7 @@ interface INavigationRouter {
     fun navigateToTodayScreen()
     fun navigateAddEditMemoryScreen()
     fun navigateToMemoryDetailScreen()
+    fun navigateToMapScreen(latitude: Double?, longitude: Double?)
+    fun returnFromMap(latitude: Double, longitude: Double)
     fun getNavController(): NavController
 }
