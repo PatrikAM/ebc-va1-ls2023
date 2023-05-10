@@ -1,9 +1,14 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
+import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -23,10 +28,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import cz.mendelu.pef.va1.xmichl.meminiapp.MeminiApp
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.extensions.round
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
@@ -70,7 +78,7 @@ fun AddEditMemoryScreen(
                 navigation.getNavController()
                     .currentBackStackEntry
                     ?.savedStateHandle
-                    ?.remove<String>("location") // seems no to be working
+                    ?.remove<String>("location")
             }
         }
     }
@@ -99,7 +107,6 @@ fun AddEditMemoryScreen(
             }
         }
     }
-
 
     NavScreen(
         appBarTitle = "Add Edit", //TODO: memory title
@@ -132,17 +139,6 @@ fun AddEditScreenContent(
             var selectedImageUri by remember {
                 mutableStateOf<Uri?>(null)
             }
-
-//            val pickMedia = registerForActivityResult(PickVisualMedia()) { uri ->
-//                // Callback is invoked after the user selects a media item or closes the
-//                // photo picker.
-//                if (uri != null) {
-//                    Log.d("PhotoPicker", "Selected URI: $uri")
-//                } else {
-//                    Log.d("PhotoPicker", "No media selected")
-//                }
-//            }
-
 
             val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.GetContent(),// .PickVisualMedia(),
@@ -257,8 +253,17 @@ fun AddEditScreenContent(
             InfoElement(
                 value =
                 if (data.memory.hasLocation())
-                    if (Location(data.memory.latitude!!, data.memory.longitude).getNearestCity() != null)
-                        "${Location(data.memory.latitude!!, data.memory.longitude).getNearestCity()}"
+                    if (Location(
+                            data.memory.latitude!!,
+                            data.memory.longitude
+                        ).getNearestCity() != null
+                    )
+                        "${
+                            Location(
+                                data.memory.latitude!!,
+                                data.memory.longitude
+                            ).getNearestCity()
+                        }"
                     else
                         "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
                 else "",
@@ -267,7 +272,8 @@ fun AddEditScreenContent(
                 onClick = {
                     navigation.navigateToMapScreen(
                         data.memory.latitude,
-                        data.memory.longitude)
+                        data.memory.longitude
+                    )
                 },
                 onClearClick = {
                     actions.onLocationChanged(null, null)
@@ -298,5 +304,5 @@ fun AddEditScreenContent(
     } else {
         // todo loading screen
     }
-
 }
+
