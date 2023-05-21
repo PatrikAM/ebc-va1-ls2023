@@ -1,14 +1,8 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
-import android.Manifest
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -28,13 +22,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
-import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import cz.mendelu.pef.va1.xmichl.meminiapp.MeminiApp
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.extensions.round
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
@@ -230,7 +220,7 @@ fun AddEditScreenContent(
 
             val datePickerDialog = DatePickerDialog(
                 LocalContext.current,
-                { dialog: DatePicker, year: Int, month: Int, day: Int ->
+                { _: DatePicker, year: Int, month: Int, day: Int ->
                     actions.onDateChanged(DateUtils.getUnixTime(year, month, day))
                 },
                 y,
@@ -267,7 +257,7 @@ fun AddEditScreenContent(
                     else
                         "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
                 else "",
-                label = "Location",
+                label = "Location (optional)",
                 leadingIcon = Icons.Default.LocationOn,
                 onClick = {
                     navigation.navigateToMapScreen(
@@ -287,7 +277,7 @@ fun AddEditScreenContent(
                     actions.onDescriptionChanged(it)
                 },
                 leadingIcon = Icons.Default.Notes,
-                label = "Description",
+                label = "Description (optional)",
                 onClearClick = {
 //                    data.memory.description = null
                     actions.onDescriptionChanged(null)
@@ -306,3 +296,34 @@ fun AddEditScreenContent(
     }
 }
 
+//@OptIn(ExperimentalPermissionsApi::class)
+//@Composable
+//private fun FeatureThatRequiresCameraPermission() {
+//
+//    // Camera permission state
+//    val cameraPermissionState = rememberPermissionState(
+//        android.Manifest.permission.CAMERA
+//    )
+//
+//    if (cameraPermissionState.status.isGranted) {
+//        Text("Camera permission Granted")
+//    } else {
+//        Column {
+//            val textToShow = if (cameraPermissionState.status.shouldShowRationale) {
+//                // If the user has denied the permission but the rationale can be shown,
+//                // then gently explain why the app requires this permission
+//                "The camera is important for this app. Please grant the permission."
+//            } else {
+//                // If it's the first time the user lands on this feature, or the user
+//                // doesn't want to be asked again for this permission, explain that the
+//                // permission is required
+//                "Camera permission required for this feature to be available. " +
+//                        "Please grant the permission"
+//            }
+//            Text(textToShow)
+//            Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
+//                Text("Request permission")
+//            }
+//        }
+//    }
+//}

@@ -3,6 +3,7 @@ package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalFocusManager
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.theme.basicMargin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,6 +56,6 @@ fun MyTextfield(
         label = {
             Text(text = label)
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(bottom = basicMargin())
     )
 }

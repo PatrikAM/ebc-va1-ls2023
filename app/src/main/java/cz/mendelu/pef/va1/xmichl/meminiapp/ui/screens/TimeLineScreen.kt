@@ -13,7 +13,6 @@ fun TimeLineScreen(
 ) {
     NavScreen(
         appBarTitle = "My memories",
-        onBackClick = {},
         boxContent = false,
         destination = Destination.TimeLineScreen,
         navigation = navigation,

@@ -13,6 +13,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
@@ -66,3 +67,5 @@ fun MeminiAppTheme(
         content = content
     )
 }
+
+fun basicMargin() = 16.dp

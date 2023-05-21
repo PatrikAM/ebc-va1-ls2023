@@ -1,10 +1,7 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -30,6 +27,7 @@ fun NavScreen(
     appBarTitle: String,
     onBackClick: () -> Unit = {},
     boxContent: Boolean = false,
+    contentModifier: Modifier = Modifier,
     //actions: @Composable() (RowScope.() -> Unit),
     backArrowNeeded: Boolean = false,
     destination: Destination,
@@ -96,8 +94,9 @@ fun NavScreen(
     ) {
         if (!boxContent) {
             LazyColumn(
-                modifier = Modifier.padding(it).fillMaxSize(),
+                modifier = contentModifier.padding(it).fillMaxSize(),
                 horizontalAlignment = CenterHorizontally,
+//                verticalArrangement = Arrangement.Center,
             ) {
                 item {
                     content(it)
@@ -105,7 +104,7 @@ fun NavScreen(
             }
         } else {
             Box(
-                modifier = Modifier
+                modifier = contentModifier
                     .padding(it)
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
