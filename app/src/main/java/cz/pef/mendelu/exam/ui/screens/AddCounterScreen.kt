@@ -91,6 +91,7 @@ fun AddCounterScreenContent(
 
     if (!data.loading) {
 
+
         MyTextField(
             value = data.counter.name,
             label = "Counter Name",
@@ -110,7 +111,7 @@ fun AddCounterScreenContent(
                 actions.onCurrentValueChanged(it)
             },
             enabled = !viewing,
-            error = if (data.counterNameError != null)
+            error = if (data.counterCurrentValueError != null)
                 stringResource(id = data.counterCurrentValueError!!) else ""
         )
 

@@ -110,6 +110,7 @@ fun CounterRow(
                 contentDescription = null
             )
         }
+
         Text(text = counter.name, textAlign = TextAlign.Center)
         IconButton(onClick = {
             if (counter.minimumValue != null) {
