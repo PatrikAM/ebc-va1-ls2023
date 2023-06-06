@@ -1,5 +1,7 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
 
 class MemoryDetailScreenData {
@@ -15,4 +17,5 @@ class MemoryDetailScreenData {
     )
 
     var loading: Boolean = true
+    var confirmDialogPresented: Boolean = false
 }

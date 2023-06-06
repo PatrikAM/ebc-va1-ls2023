@@ -37,4 +37,18 @@ data class Memory(
     fun hasLocation(): Boolean =
         latitude != null && longitude != null
 
+    fun getImages(): MutableList<String> {
+        val l: MutableList<String> = mutableListOf(primaryPhoto)
+
+        if (photo1 != null) {
+            l.add(photo1!!)
+        }
+
+        if (photo2 != null) {
+            l.add(photo2!!)
+        }
+
+        return l
+    }
+
 }

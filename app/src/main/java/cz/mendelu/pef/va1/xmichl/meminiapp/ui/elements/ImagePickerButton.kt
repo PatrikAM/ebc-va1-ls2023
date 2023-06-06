@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import java.io.File
@@ -40,10 +41,9 @@ fun ImagePickerButton(
     ) {
         if (imageName != null) {
             val imageFile = File(LocalContext.current.filesDir, imageName)
-            Log.d("imageFile", imageFile.absolutePath)
-            Image(
-                rememberAsyncImagePainter(imageFile),
-                contentDescription = "...",
+            AsyncImage(
+                model = imageFile.absolutePath,
+                contentDescription = null,
             )
         } else {
             Image(
