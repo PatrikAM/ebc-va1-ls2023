@@ -1,5 +1,6 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
+import ConfirmationAlertDialog
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -10,8 +11,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.extensions.round
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
@@ -44,6 +49,8 @@ fun MemoryDetailScreen(
         }
     }
 
+    val confirmDialogPresented = remember { mutableStateOf(false) }
+
     BackArrowScreen(
         appBarTitle = viewModel.data.memory.title, //TODO: title
         onBackClick = {
@@ -53,12 +60,26 @@ fun MemoryDetailScreen(
             IconButton(onClick = { navigation.navigateAddEditMemoryScreen(id) }) {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "")
             }
-            IconButton(onClick = { viewModel.deleteMemory() }) {
+            IconButton(onClick = {
+                confirmDialogPresented.value = true
+
+            }) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = "")
             }
         }
     ) {
 
+        if (confirmDialogPresented.value) {
+            ConfirmationAlertDialog(
+                message = stringResource(R.string.cofrimation_message),
+                onDismiss = {},
+                //actionLabel = stringResource(R.string.yes),
+                onConfirm = {
+                    viewModel.deleteMemory()
+                    confirmDialogPresented.value = false
+                }
+            )
+        }
         Column(modifier = Modifier.fillMaxSize(0.8F)) {
             Text(text = DateUtils.getDateString(viewModel.data.memory.date))
             Text(text = viewModel.data.memory.primaryPhoto)

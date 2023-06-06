@@ -15,9 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dt.composedatepicker.ComposeCalendar
 import com.dt.composedatepicker.SelectDateListener
+import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.AddEditMemoryFAB
@@ -37,7 +39,7 @@ fun SearchScreen(
 
     if (!isInSelectSate.value) {
         NavScreen(
-            appBarTitle = "Search memories",
+            appBarTitle = stringResource(R.string.search_memories),
             onBackClick = {},
             //columnContent = false,
             destination = Destination.SearchScreen,

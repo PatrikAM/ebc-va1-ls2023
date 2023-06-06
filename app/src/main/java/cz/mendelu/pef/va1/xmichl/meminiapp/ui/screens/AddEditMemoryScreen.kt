@@ -111,7 +111,7 @@ fun AddEditMemoryScreen(
     }
     val context_ = LocalContext.current
     NavScreen(
-        appBarTitle = "Add Edit", //TODO: memory title
+        appBarTitle = stringResource(R.string.Add_Edit), //TODO: memory title
         destination = Destination.AddEditMemoryScreen, //TODO: prev or prevprev destination
         navigation = navigation,
         backArrowNeeded = true,
@@ -213,7 +213,7 @@ fun AddEditScreenContent(
                         actions.onTitleChanged(it)
                     },
                     leadingIcon = Icons.Default.Title,
-                    label = "Title",
+                    label = stringResource(R.string.title),
                     onClearClick = {
                         actions.onTitleChanged("")
                     }
@@ -284,7 +284,7 @@ fun AddEditScreenContent(
                         else
                             "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
                     else "",
-                    label = "Location (optional)",
+                    label = stringResource(R.string.location) + " (" + stringResource(R.string.optional) + ")",
                     leadingIcon = Icons.Default.LocationOn,
                     onClick = {
                         navigation.navigateToMapScreen(
@@ -304,7 +304,7 @@ fun AddEditScreenContent(
                         actions.onDescriptionChanged(it)
                     },
                     leadingIcon = Icons.Default.Notes,
-                    label = "Description (optional)",
+                    label = stringResource(R.string.description) + " (" + stringResource(R.string.optional) + ")",
                     onClearClick = {
 //                    data.memory.description = null
                         actions.onDescriptionChanged(null)

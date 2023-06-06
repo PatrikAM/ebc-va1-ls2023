@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.tasks.Tasks
 import com.google.maps.android.compose.*
 import cz.mendelu.pef.va1.xmichl.meminiapp.MeminiApp
+import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
@@ -43,7 +45,7 @@ fun MapScreen(
 ) {
 
     NavScreen(
-        appBarTitle = "Map screen",
+        appBarTitle = stringResource(R.string.map_screen),
         boxContent = true,
         onBackClick = { navigation.returnBack() },
         backArrowNeeded = true,

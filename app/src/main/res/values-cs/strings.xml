@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MeminiApp</string>
+    <string name="timelineNavLabel">Timeline</string>
+    <string name="todayNavLabel">Dnes</string>
+    <string name="mapNavLabel">Mapa</string>
+    <string name="searchNavLabel">Hledat</string>
+    <string name="date">Datum</string>
+    <string name="cofrimation_message">Určitě chcete vzpomínku smazat?</string>
+    <string name="yes">Ano</string>
+    <string name="my_memories">Mé vzpomínky</string>
+    <string name="search_memories">Prohledat vzpomínky</string>
+    <string name="map_screen">Mapa</string>
+    <string name="Add_Edit">Přidání/Editace</string>
+    <string name="on_this_day">Dnes</string>
+    <string name="location">Místo</string>
+    <string name="optional">volitelné</string>
+    <string name="description">Popis</string>
+    <string name="title">Název</string>
+    <string name="confirmation">Potvrzení</string>
+    <string name="confirm">Potvrdit</string>
+    <string name="no">Zrušit</string>
+</resources>
