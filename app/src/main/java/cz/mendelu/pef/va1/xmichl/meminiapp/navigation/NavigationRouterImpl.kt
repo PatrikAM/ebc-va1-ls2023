@@ -31,14 +31,14 @@ class NavigationRouterImpl(
         )
     }
 
-    override fun navigateAddEditMemoryScreen() {
+    override fun navigateAddEditMemoryScreen(id: Long?) {
         navController.navigate(
-            Destination.AddEditMemoryScreen.route
+            Destination.AddEditMemoryScreen.route + "/" + id
         )
     }
 
-    override fun navigateToMemoryDetailScreen() {
-        TODO("Not yet implemented")
+    override fun navigateToMemoryDetailScreen(id: Long) {
+        navController.navigate(Destination.MemoryDetailScreen.route + "/" + id)
     }
 
     override fun navigateToMapScreen(latitude: Double?, longitude: Double?) {

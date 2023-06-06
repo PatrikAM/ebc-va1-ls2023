@@ -20,7 +20,7 @@ fun TimeLineScreen(
             AddEditMemoryFAB(navigation = navigation)
         }
     ) {
-        MemoryList()
+        MemoryList(navigation = navigation)
         //Greeting(name = "Android")
     }
 }

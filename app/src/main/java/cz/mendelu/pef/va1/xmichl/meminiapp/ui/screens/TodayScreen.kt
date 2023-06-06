@@ -19,6 +19,6 @@ fun TodayScreen(navigation: INavigationRouter) {
             AddEditMemoryFAB(navigation = navigation)
         }
     ) {
-        MemoryList(today = true)
+        MemoryList(navigation = navigation, today = true)
     }
 }

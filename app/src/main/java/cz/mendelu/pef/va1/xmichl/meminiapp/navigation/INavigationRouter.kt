@@ -7,8 +7,8 @@ interface INavigationRouter {
     fun navigateToSearchScreen()
     fun navigateToTimeLineScreen()
     fun navigateToTodayScreen()
-    fun navigateAddEditMemoryScreen()
-    fun navigateToMemoryDetailScreen()
+    fun navigateAddEditMemoryScreen(id: Long?)
+    fun navigateToMemoryDetailScreen(id: Long)
     fun navigateToMapScreen(latitude: Double?, longitude: Double?)
     fun returnFromMap(latitude: Double, longitude: Double)
     fun getNavController(): NavController

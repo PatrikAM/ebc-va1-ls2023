@@ -1,5 +1,7 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
@@ -13,6 +15,7 @@ import com.squareup.moshi.Moshi
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.*
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
@@ -37,12 +40,34 @@ fun NavGraph(
             SearchScreen(navigation)
         }
 
+        composable(
+            route = Destination.MemoryDetailScreen.route + "/{id}",
+            arguments = listOf(
+                navArgument("id"){
+                    type = NavType.LongType
+                    defaultValue = -1L
+                }
+            )
+        ){
+            val id = it.arguments?.getLong("id")
+            MemoryDetailScreen(navigation, id = id!!)
+        }
+
         composable(Destination.SplashScreen.route) {
             SplashScreen(navigation)
         }
 
-        composable(Destination.AddEditMemoryScreen.route) {
-            AddEditMemoryScreen(navigation)
+        composable(
+            route = Destination.AddEditMemoryScreen.route + "/{id}",
+            arguments = listOf(
+                navArgument("id"){
+                    type = NavType.LongType
+                    defaultValue = -1L
+                }
+            )
+        ){
+            val id = it.arguments?.getLong("id")
+            AddEditMemoryScreen(navigation, id = if (id != -1L) id else null)
         }
 
         composable(route = Destination.MapScreen.route) {

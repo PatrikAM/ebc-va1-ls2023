@@ -22,6 +22,10 @@ class MemoriesRepositoryImpl(private val dao: MemoriesDao)
         dao.update(memory)
     }
 
+    override suspend fun deleteMemory(memory: Memory) {
+        dao.deleteMemory(memory)
+    }
+
 //    override suspend fun getMemoriesByDate(date: Long): Flow<List<Memory>> {
 //        return dao.getMemoriesByDate(date)
 //    }

@@ -1,11 +1,14 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -19,11 +22,18 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import coil.compose.rememberAsyncImagePainter
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import cz.mendelu.pef.va1.xmichl.meminiapp.MeminiApp
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.extensions.round
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
@@ -35,8 +45,10 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyTextfield
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
 import cz.mendelu.pef.va1.xmichl.meminiapp.utils.DateUtils
 import org.koin.androidx.compose.getViewModel
+import java.io.File
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditMemoryScreen(
     navigation: INavigationRouter,
@@ -97,13 +109,14 @@ fun AddEditMemoryScreen(
             }
         }
     }
-
+    val context_ = LocalContext.current
     NavScreen(
         appBarTitle = "Add Edit", //TODO: memory title
         destination = Destination.AddEditMemoryScreen, //TODO: prev or prevprev destination
         navigation = navigation,
         backArrowNeeded = true,
         onBackClick = {
+            viewModel.deleteAllPhotoHolders(context_)
             navigation.returnBack()
         }
     ) {
@@ -115,124 +128,82 @@ fun AddEditMemoryScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditScreenContent(
     actions: AddEditMemoryActions,
     data: AddEditScreenData,
     navigation: INavigationRouter
 ) {
+
     if (!data.loading) {
-        val context = MeminiApp.appContext
-        val permissionState = remember { mutableStateOf(false) }
-
-        val permissionsRequester =
-            rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                permissionState.value = isGranted
-            }
-
-        if (permissionState.value) {
 
             Column(
                 modifier = Modifier.fillMaxSize(0.9f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var selectedImageUri by remember {
-                    mutableStateOf<Uri?>(null)
-                }
 
+                val context_ = LocalContext.current
                 val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.GetContent(),// .PickVisualMedia(),
-//                contract = ActivityResultContracts.PickVisualMedia(),
                     onResult = { uri ->
-                        selectedImageUri = uri
-                        Log.d("image123", uri?.toString()!!)
+                        uri?.let {
+                            actions.onPhotoPickerExit(uri, context_)
+                        }
                     }
                 )
 
                 Row {
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize(0.25f)
-//                        .padding(5.dp)
-//                ) {
-//                    Column {
-//                        Image(
-//                            painter =
-//                            if (selectedImageUri != null)
-//                                rememberAsyncImagePainter(model = Uri.parse(selectedImageUri.toString()))
-//                            else painterResource(id = R.drawable.photo_place_holder),
-//                            contentDescription = null,
-//                            modifier = Modifier.clickable {
-//                                actions.onPhotoPickerStart(0)
-//                                singlePhotoPickerLauncher.launch(
-////                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-//                                    "image/*"
-//                                )
-//                            }
-//                        )
-//                        IconButton(
-//                            onClick = { /*TODO*/ },
-//                            modifier = Modifier.align(Alignment.CenterHorizontally)
-//                        ) {
-//                            Icon(
-//                                imageVector = Icons.Default.Clear,
-//                                contentDescription = null
-//                            )
-//                        }
-//                    }
-//                }
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize(0.33f)
-//                        .padding(5.dp),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.undraw_polaroid),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .align(Alignment.Center)
-//                            .graphicsLayer(alpha = 0.5f)
-//                    )
-//                    Box(
-//                        modifier = Modifier
-//                            .size(64.dp)
-//                            .border(2.dp, Color.White, CircleShape)
-//                    ) {
-//                        IconButton(
-//                            onClick = { /*TODO*/ },
-//                            modifier = Modifier.align(Alignment.Center)
-//                        ) {
-//                            Icon(
-//                                imageVector = Icons.Default.Clear,
-//                                contentDescription = null,
-//                            )
-//                        }
-//                    }
-//                }
-                    ImagePickerButton(size = 0.25f) {
-                        actions.onPhotoPickerStart(0)
-                        singlePhotoPickerLauncher.launch(
-//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            "image/*"
-                        )
-                    }
 
-                    ImagePickerButton(size = 0.33f) {
-                        actions.onPhotoPickerStart(0)
-                        singlePhotoPickerLauncher.launch(
-//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            "image/*"
-                        )
-                    }
+                    SinglePermission()
 
-                    ImagePickerButton(size = 0.5f) {
-                        actions.onPhotoPickerStart(0)
-                        singlePhotoPickerLauncher.launch(
+                    ImagePickerButton(
+                        imageName = data.primaryPhotoPicked,
+                        size = 0.25f,
+                        onClick = {
+                            actions.onPhotoPickerStart(0)
+                            singlePhotoPickerLauncher.launch(
 //                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                            "image/*"
-                        )
-                    }
+                                "image/*"
+                            )
+                        },
+                        onClear = {
+                            actions.onPhotoPickerStart(0)
+                            actions.onPhotoCleared(context_)
+                        }
+                    )
+
+                    ImagePickerButton(
+                        imageName = data.secondaryPhotoPicked,
+                        size = 0.33f,
+                        onClick = {
+                            actions.onPhotoPickerStart(1)
+                            singlePhotoPickerLauncher.launch(
+//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                "image/*"
+                            )
+                        },
+                        onClear = {
+                            actions.onPhotoPickerStart(1)
+                            actions.onPhotoCleared(context_)
+                        }
+                    )
+
+                    ImagePickerButton(
+                        imageName = data.ternaryPhotoPicked,
+                        size = 0.5f,
+                        onClick = {
+                            actions.onPhotoPickerStart(2)
+                            singlePhotoPickerLauncher.launch(
+//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                "image/*"
+                            )
+                        },
+                        onClear = {
+                            actions.onPhotoPickerStart(2)
+                            actions.onPhotoCleared(context_)
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(50.dp))
@@ -267,6 +238,23 @@ fun AddEditScreenContent(
                     d
 
                 )
+
+                data.primaryPhotoPicked?.let {
+                    val imageFile = File(LocalContext.current.filesDir, data.primaryPhotoPicked!!)
+                    Log.d("imageFile", imageFile.absolutePath)
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        Image(
+                            rememberAsyncImagePainter(imageFile),
+                            contentDescription = "...",
+                        )
+
+                    }
+                }
+
+                if (data.primaryPhotoPicked != null) {
+                    Text("${data.primaryPhotoPicked}")
+                }
+
 
                 InfoElement(
                     value = DateUtils.getDateString(data.memory.date),
@@ -325,47 +313,50 @@ fun AddEditScreenContent(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
-                    onClick = { actions.saveMemory() }
+                    onClick = { actions.saveMemory(context_) }
                 ) {
                     Text(text = "Save")
                 }
             }
-        } else {
-            permissionsRequester.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
+//        } else {
+//            permissionsRequester.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//        }
     } else {
         // todo loading screen
     }
 }
 
-//@OptIn(ExperimentalPermissionsApi::class)
-//@Composable
-//private fun FeatureThatRequiresCameraPermission() {
-//
-//    // Camera permission state
-//    val cameraPermissionState = rememberPermissionState(
-//        android.Manifest.permission.CAMERA
-//    )
-//
-//    if (cameraPermissionState.status.isGranted) {
-//        Text("Camera permission Granted")
-//    } else {
-//        Column {
-//            val textToShow = if (cameraPermissionState.status.shouldShowRationale) {
-//                // If the user has denied the permission but the rationale can be shown,
-//                // then gently explain why the app requires this permission
-//                "The camera is important for this app. Please grant the permission."
-//            } else {
-//                // If it's the first time the user lands on this feature, or the user
-//                // doesn't want to be asked again for this permission, explain that the
-//                // permission is required
-//                "Camera permission required for this feature to be available. " +
-//                        "Please grant the permission"
-//            }
-//            Text(textToShow)
-//            Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
-//                Text("Request permission")
-//            }
-//        }
-//    }
-//}
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@SuppressLint("PermissionLaunchedDuringComposition")
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun SinglePermission() {
+    val permissionState =
+        rememberPermissionState(permission = android.Manifest.permission.READ_MEDIA_IMAGES)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(key1 = lifecycleOwner, effect = {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_START -> {
+                    permissionState.launchPermissionRequest()
+                }
+                else -> {
+
+                }
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    })
+
+    when {
+        !permissionState.status.isGranted && !permissionState.status.shouldShowRationale -> {
+            Text(text = "Permission fully denied. Go to settings to enable")
+        }
+    }
+}

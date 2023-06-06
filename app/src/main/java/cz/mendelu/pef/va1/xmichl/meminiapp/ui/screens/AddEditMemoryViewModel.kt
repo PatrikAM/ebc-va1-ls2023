@@ -1,23 +1,19 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import cz.mendelu.pef.va1.xmichl.meminiapp.MeminiApp
+import androidx.documentfile.provider.DocumentFile
 import cz.mendelu.pef.va1.xmichl.meminiapp.architecture.BaseViewModel
 import cz.mendelu.pef.va1.xmichl.meminiapp.database.IMemoriesRepository
 import kotlinx.coroutines.launch
+import java.io.FileOutputStream
 
 class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : BaseViewModel(),
     AddEditMemoryActions {
@@ -32,12 +28,32 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
     val addEditMemoryUIState: MutableState<AddEditScreenUIState> =
         mutableStateOf(AddEditScreenUIState.Loading)
 
-    override fun saveMemory() {
-        if (data.memory.title.isEmpty()) {
+    override fun saveMemory(context: Context) {
+        if (data.memory.title.isEmpty() || data.primaryPhotoPicked == null) {
             // error
             // TODO check date and primary photo also
             addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
         } else {
+            if (data.primaryPhotoPicked != data.memory.primaryPhoto) {
+                deleteImage(context, data.memory.primaryPhoto)
+                data.memory.primaryPhoto = data.primaryPhotoPicked!!
+            }
+
+            if (data.secondaryPhotoPicked != data.memory.photo1) {
+                if (data.memory.photo1 != null) {
+                    deleteImage(context, data.memory.photo1!!)
+                }
+                data.memory.photo1 = data.secondaryPhotoPicked
+            }
+
+
+            if (data.ternaryPhotoPicked != data.memory.photo2) {
+                if (data.memory.photo2 != null) {
+                    deleteImage(context, data.memory.photo2!!)
+                }
+                data.memory.photo2 = data.ternaryPhotoPicked
+            }
+
             launch {
                 if (memoryId == null) {
                     val id = repository.insert(data.memory)
@@ -55,7 +71,6 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
     }
 
     override fun onTitleChanged(title: String) {
-        Log.d("aaaa", "ddddd")
         data.memory.title = title
         addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
     }
@@ -65,17 +80,70 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
         addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
     }
 
-    override fun onPhotoPickerExit(uri: Uri?) {
+    override fun onPhotoPickerExit(uri: Uri, context: Context) {
+
+        val input = context.contentResolver.openInputStream(uri) ?: return
+
+
+        val documentFile = DocumentFile.fromSingleUri(context, uri)
+        val originalName = documentFile?.name?.substringBeforeLast('.')
+        val extension = documentFile?.name?.substringAfterLast('.')
+
+        val fileName = "${originalName}_${System.currentTimeMillis()}.$extension"
+        val outputFile = context.filesDir.resolve(fileName)
+        input.copyTo(outputFile.outputStream())
+        Log.d("file", "${outputFile.exists()}")
+        //input.close()
 
         when (data.photoIndex) {
             0 -> {
-                //            data.memory.primaryPhoto =
+                data.primaryPhotoPicked = fileName
             }
+
             1 -> {
-                //            data.memory.primaryPhoto =
+                data.secondaryPhotoPicked = fileName
             }
+
             2 -> {
-                //            data.memory.primaryPhoto =
+                data.ternaryPhotoPicked = fileName
+            }
+        }
+        addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
+    }
+
+    fun deleteAllPhotoHolders(context: Context) {
+        if (data.primaryPhotoPicked != null && data.primaryPhotoPicked != data.memory.primaryPhoto) {
+            deleteImage(context, data.primaryPhotoPicked!!)
+        }
+        if (data.secondaryPhotoPicked != null && data.secondaryPhotoPicked != data.memory.photo1) {
+            deleteImage(context, data.secondaryPhotoPicked!!)
+        }
+        if (data.ternaryPhotoPicked != null && data.ternaryPhotoPicked != data.memory.photo2) {
+            deleteImage(context, data.ternaryPhotoPicked!!)
+        }
+    }
+
+    private fun deleteImage(context: Context, imageName: String) {
+        val file = context.filesDir.resolve(imageName)
+        file.delete()
+    }
+
+    override fun onPhotoCleared(context: Context) {
+
+        when (data.photoIndex) {
+            0 -> {
+                deleteImage(context, data.primaryPhotoPicked!!)
+                data.primaryPhotoPicked = null
+            }
+
+            1 -> {
+                deleteImage(context, data.secondaryPhotoPicked!!)
+                data.secondaryPhotoPicked = null
+            }
+
+            2 -> {
+                deleteImage(context, data.ternaryPhotoPicked!!)
+                data.ternaryPhotoPicked = null
             }
         }
         addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
@@ -86,11 +154,11 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
     }
 
     override fun onLocationChanged(latitude: Double?, longitude: Double?) {
-        if (latitude == null)  {
+        if (latitude == null) {
             Log.d("onLocationChanged", "lat null")
         }
 
-        if (longitude == null)  {
+        if (longitude == null) {
             Log.d("onLocationChanged", "lon null")
         }
         data.memory.latitude = latitude
@@ -105,6 +173,9 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
                 data.memory = repository.getMemoryById(memoryId!!)
                 data.loading = false
                 addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
+                data.primaryPhotoPicked = data.memory.primaryPhoto
+                data.secondaryPhotoPicked = data.memory.photo1
+                data.ternaryPhotoPicked = data.memory.photo2
             }
         } else {
             data.loading = false

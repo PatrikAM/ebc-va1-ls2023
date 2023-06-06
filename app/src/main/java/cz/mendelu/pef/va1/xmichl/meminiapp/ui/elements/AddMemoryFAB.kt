@@ -11,7 +11,7 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 fun AddEditMemoryFAB(navigation: INavigationRouter) {
     FloatingActionButton(
         onClick = {
-            navigation.navigateAddEditMemoryScreen()
+            navigation.navigateAddEditMemoryScreen(-1L)
         }) {
         Icon(Icons.Default.Add, contentDescription = "Add")
     }

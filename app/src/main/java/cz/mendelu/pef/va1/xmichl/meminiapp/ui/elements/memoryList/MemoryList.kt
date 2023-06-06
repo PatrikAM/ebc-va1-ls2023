@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
+import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.PlaceHolderScreen
 import org.koin.androidx.compose.getViewModel
 import java.util.*
@@ -14,7 +15,8 @@ fun MemoryList(
     viewModel: MemoryListViewModel = getViewModel(),
     date: Date? = null,
     today: Boolean = false,
-    name: Regex = Regex(".*")
+    name: Regex = Regex(".*"),
+    navigation: INavigationRouter
 ) {
 
     val memories = remember { mutableStateListOf<Memory>() }
@@ -41,7 +43,9 @@ fun MemoryList(
         )
     } else {
         memories.forEach { memory ->
-            MemoryRow(memory)
+            MemoryRow(memory) {
+                navigation.navigateToMemoryDetailScreen(memory.id!!)
+            }
         }
     }
 

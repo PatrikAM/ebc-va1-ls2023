@@ -1,13 +1,10 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.database
 
 import android.content.Context
-import androidx.databinding.adapters.Converters
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
-//@TypeConverters(Converters::class)
 
 @Database(entities = [Memory::class], version = 5, exportSchema = true)
 abstract class MemoriesDatabase : RoomDatabase() {

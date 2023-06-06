@@ -8,5 +8,6 @@ interface IMemoriesRepository {
     suspend fun insert(memory: Memory): Long
     suspend fun getMemoryById(id: Long): Memory
     suspend fun update(memory: Memory)
+    suspend fun deleteMemory(memory: Memory)
 //    suspend fun getMemoriesByDate(date: Long): Flow<List<Memory>>
 }

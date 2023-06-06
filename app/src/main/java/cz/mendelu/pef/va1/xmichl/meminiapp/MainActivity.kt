@@ -28,11 +28,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Greeting("Android")
-                    //TimeLineScreen()
-                    //TodayScreen()
-                    //SearchScreen()
-                    //SplashScreen()
                     NavGraph(startDestination = Destination.TimeLineScreen.route)
                 }
             }

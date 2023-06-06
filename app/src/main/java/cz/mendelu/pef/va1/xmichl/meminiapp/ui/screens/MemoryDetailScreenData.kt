@@ -2,7 +2,7 @@ package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Memory
 
-class AddEditScreenData {
+class MemoryDetailScreenData {
     var memory: Memory = Memory(
         title = "",
         date = System.currentTimeMillis(),
@@ -13,10 +13,6 @@ class AddEditScreenData {
         longitude = null,
         latitude = null
     )
-    var loading: Boolean = true
-    var photoIndex: Int = 0
 
-    var primaryPhotoPicked: String? = null
-    var secondaryPhotoPicked: String? = null
-    var ternaryPhotoPicked: String? = null
+    var loading: Boolean = true
 }

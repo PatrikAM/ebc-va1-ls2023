@@ -1,5 +1,6 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.database
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -20,6 +21,9 @@ interface MemoriesDao {
 
     @Update
     suspend fun update(memory: Memory)
+
+    @Delete
+    suspend fun deleteMemory(memory: Memory)
 
 //    @Query("SELECT * FROM memories WHERE date = :date")
 //    suspend fun getMemoriesByDate(date: Long): Flow<List<Memory>>
