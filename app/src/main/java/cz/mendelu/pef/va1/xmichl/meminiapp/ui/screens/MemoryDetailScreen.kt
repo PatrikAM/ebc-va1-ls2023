@@ -2,6 +2,9 @@ package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
 import Carousel
 import ConfirmationAlertDialog
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

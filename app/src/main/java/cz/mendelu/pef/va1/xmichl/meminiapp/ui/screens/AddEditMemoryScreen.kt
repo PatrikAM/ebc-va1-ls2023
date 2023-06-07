@@ -3,12 +3,10 @@ package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
-import android.util.Log
 import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
@@ -27,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -37,15 +34,15 @@ import com.squareup.moshi.Moshi
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.extensions.round
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
-import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.ImagePickerButton
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.InfoElement
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.Loading
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.LoadingScreen
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyTextfield
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.BackArrowScreen
 import cz.mendelu.pef.va1.xmichl.meminiapp.utils.DateUtils
 import org.koin.androidx.compose.getViewModel
-import java.io.File
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -53,7 +50,7 @@ import java.util.*
 fun AddEditMemoryScreen(
     navigation: INavigationRouter,
     viewModel: AddEditMemoryViewModel = getViewModel(),
-    id: Long? = null //TODO change this to be mandatory
+    id: Long? = null
 ) {
 
     viewModel.memoryId = id
@@ -61,26 +58,22 @@ fun AddEditMemoryScreen(
 
     navigation.getNavController().currentBackStackEntry?.let {
         if (navigation.getNavController().currentBackStackEntry!!.savedStateHandle.contains("location")) {
-            val mapScreenResult = navigation
-                .getNavController()
-                .currentBackStackEntry
-                ?.savedStateHandle
-                ?.getLiveData<String>("location")
-                ?.observeAsState()
+            val mapScreenResult =
+                navigation.getNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+                    "location"
+                )?.observeAsState()
 
             mapScreenResult?.value?.let {
                 val moshi: Moshi = Moshi.Builder().build()
-                val jsonAdapter: JsonAdapter<Location> =
-                    moshi.adapter(Location::class.java)
+                val jsonAdapter: JsonAdapter<Location> = moshi.adapter(Location::class.java)
                 val location: Location? = jsonAdapter.fromJson(it)
                 if (location != null) {
                     viewModel.onLocationChanged(location.latitude, location.longitude)
                 }
 
-                navigation.getNavController()
-                    .currentBackStackEntry
-                    ?.savedStateHandle
-                    ?.remove<String>("location")
+                navigation.getNavController().currentBackStackEntry?.savedStateHandle?.remove<String>(
+                    "location"
+                )
             }
         }
     }
@@ -96,34 +89,36 @@ fun AddEditMemoryScreen(
             AddEditScreenUIState.Loading -> {
                 viewModel.initMemory()
             }
+
             AddEditScreenUIState.Default -> {}
-            AddEditScreenUIState.Loading -> TODO()
             AddEditScreenUIState.MemoryChanged -> {
                 data = viewModel.data
                 viewModel.addEditMemoryUIState.value = AddEditScreenUIState.Default
             }
+
             AddEditScreenUIState.MemorySaved -> {
                 LaunchedEffect(it) {
                     navigation.returnBack()
+                    if (id != null) {
+                        navigation.returnBack()
+                        navigation.navigateToMemoryDetailScreen(id)
+                    }
                 }
             }
         }
     }
     val context_ = LocalContext.current
-    NavScreen(
-        appBarTitle = stringResource(R.string.Add_Edit), //TODO: memory title
-        destination = Destination.AddEditMemoryScreen, //TODO: prev or prevprev destination
-        navigation = navigation,
-        backArrowNeeded = true,
+    BackArrowScreen(appBarTitle = stringResource(R.string.Add_Edit), //TODO: memory title
+        //destination = Destination.AddEditMemoryScreen, //TODO: prev or prevprev destination
+        //navigation = navigation,
+        //backArrowNeeded = true,
+        //fullScreenContent = true,
         onBackClick = {
             viewModel.deleteAllPhotoHolders(context_)
             navigation.returnBack()
-        }
-    ) {
+        }) {
         AddEditScreenContent(
-            actions = viewModel,
-            data = data,
-            navigation = navigation
+            actions = viewModel, data = data, navigation = navigation
         )
     }
 }
@@ -131,48 +126,44 @@ fun AddEditMemoryScreen(
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditScreenContent(
-    actions: AddEditMemoryActions,
-    data: AddEditScreenData,
-    navigation: INavigationRouter
+    actions: AddEditMemoryActions, data: AddEditScreenData, navigation: INavigationRouter
 ) {
 
     if (!data.loading) {
 
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally) {
             Column(
                 modifier = Modifier.fillMaxSize(0.9f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
                 val context_ = LocalContext.current
-                val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.GetContent(),// .PickVisualMedia(),
-                    onResult = { uri ->
-                        uri?.let {
-                            actions.onPhotoPickerExit(uri, context_)
-                        }
-                    }
-                )
+                val singlePhotoPickerLauncher =
+                    rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent(),// .PickVisualMedia(),
+                        onResult = { uri ->
+                            uri?.let {
+                                actions.onPhotoPickerExit(uri, context_)
+                            }
+                        })
 
 
                 Row {
 
                     SinglePermission()
 
-                    ImagePickerButton(
-                        imageName = data.primaryPhotoPicked,
-                        size = 0.25f,
-                        onClick = {
-                            actions.onPhotoPickerStart(0)
-                            singlePhotoPickerLauncher.launch(
+                    ImagePickerButton(imageName = data.primaryPhotoPicked, size = 0.25f, onClick = {
+                        actions.onPhotoPickerStart(0)
+                        singlePhotoPickerLauncher.launch(
 //                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                "image/*"
-                            )
-                        },
-                        onClear = {
-                            actions.onPhotoPickerStart(0)
-                            actions.onPhotoCleared(context_)
-                        }
-                    )
+                            "image/*"
+                        )
+                    }, onClear = {
+                        actions.onPhotoPickerStart(0)
+                        actions.onPhotoCleared(context_)
+                    })
 
                     ImagePickerButton(
                         imageName = data.secondaryPhotoPicked,
@@ -187,29 +178,22 @@ fun AddEditScreenContent(
                         onClear = {
                             actions.onPhotoPickerStart(1)
                             actions.onPhotoCleared(context_)
-                        }
-                    )
+                        })
 
-                    ImagePickerButton(
-                        imageName = data.ternaryPhotoPicked,
-                        size = 0.5f,
-                        onClick = {
-                            actions.onPhotoPickerStart(2)
-                            singlePhotoPickerLauncher.launch(
+                    ImagePickerButton(imageName = data.ternaryPhotoPicked, size = 0.5f, onClick = {
+                        actions.onPhotoPickerStart(2)
+                        singlePhotoPickerLauncher.launch(
 //                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                "image/*"
-                            )
-                        },
-                        onClear = {
-                            actions.onPhotoPickerStart(2)
-                            actions.onPhotoCleared(context_)
-                        }
-                    )
+                            "image/*"
+                        )
+                    }, onClear = {
+                        actions.onPhotoPickerStart(2)
+                        actions.onPhotoCleared(context_)
+                    })
                 }
 
                 Spacer(modifier = Modifier.height(50.dp))
-                MyTextfield(
-                    value = data.memory.title,
+                MyTextfield(value = data.memory.title,
                     onValueChange = {
                         actions.onTitleChanged(it)
                     },
@@ -217,8 +201,7 @@ fun AddEditScreenContent(
                     label = stringResource(R.string.title),
                     onClearClick = {
                         actions.onTitleChanged("")
-                    }
-                )
+                    })
 
                 val calendar = Calendar.getInstance()
                 data.memory.date.let {
@@ -230,31 +213,22 @@ fun AddEditScreenContent(
                 val d = calendar.get(Calendar.DAY_OF_MONTH)
 
                 val datePickerDialog = DatePickerDialog(
-                    LocalContext.current,
-                    { _: DatePicker, year: Int, month: Int, day: Int ->
+                    LocalContext.current, { _: DatePicker, year: Int, month: Int, day: Int ->
                         actions.onDateChanged(DateUtils.getUnixTime(year, month, day))
-                    },
-                    y,
-                    m,
-                    d
+                    }, y, m, d
 
                 )
 
-                data.primaryPhotoPicked?.let {
-                    val imageFile = File(LocalContext.current.filesDir, data.primaryPhotoPicked!!)
-                    Log.d("imageFile", imageFile.absolutePath)
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Image(
-                            rememberAsyncImagePainter(imageFile),
-                            contentDescription = "...",
-                        )
-
-                    }
-                }
-
-                if (data.primaryPhotoPicked != null) {
-                    Text("${data.primaryPhotoPicked}")
-                }
+//                data.primaryPhotoPicked?.let {
+//                    val imageFile = File(LocalContext.current.filesDir, data.primaryPhotoPicked!!)
+//                    Column(modifier = Modifier.fillMaxSize()) {
+//                        Image(
+//                            rememberAsyncImagePainter(imageFile),
+//                            contentDescription = "...",
+//                        )
+//
+//                    }
+//                }
 
 
                 InfoElement(
@@ -268,39 +242,28 @@ fun AddEditScreenContent(
                 )
 
 
-                InfoElement(
-                    value =
-                    if (data.memory.hasLocation())
-                        if (Location(
-                                data.memory.latitude!!,
-                                data.memory.longitude
-                            ).getNearestCity() != null
-                        )
-                            "${
-                                Location(
-                                    data.memory.latitude!!,
-                                    data.memory.longitude
-                                ).getNearestCity()
-                            }"
-                        else
-                            "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
-                    else "",
+                InfoElement(value = if (data.memory.hasLocation()) if (Location(
+                        data.memory.latitude!!, data.memory.longitude
+                    ).getNearestCity() != null
+                ) "${
+                    Location(
+                        data.memory.latitude!!, data.memory.longitude
+                    ).getNearestCity()
+                }"
+                else "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
+                else "",
                     label = stringResource(R.string.location) + " (" + stringResource(R.string.optional) + ")",
                     leadingIcon = Icons.Default.LocationOn,
                     onClick = {
-                        navigation.navigateToMapScreen(
-                            data.memory.latitude,
-                            data.memory.longitude
+                        navigation.navigateToMapPickerScreen(
+                            data.memory.latitude, data.memory.longitude
                         )
                     },
                     onClearClick = {
                         actions.onLocationChanged(null, null)
-                    }
-                )
+                    })
 
-                MyTextfield(
-                    value = if (data.memory.description != null)
-                        data.memory.description!! else "",
+                MyTextfield(value = if (data.memory.description != null) data.memory.description!! else "",
                     onValueChange = {
                         actions.onDescriptionChanged(it)
                     },
@@ -309,20 +272,22 @@ fun AddEditScreenContent(
                     onClearClick = {
 //                    data.memory.description = null
                         actions.onDescriptionChanged(null)
-                    }
-                )
+                    })
 
                 Spacer(modifier = Modifier.height(20.dp))
-                Button(
-                    onClick = { actions.saveMemory(context_) }
-                ) {
+                Button(onClick = { actions.saveMemory(context_) }) {
                     Text(text = "Save")
                 }
             }
+        }
 //        } else {
 //            permissionsRequester.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
 //        }
     } else {
+        LoadingScreen(
+            line1 = stringResource(R.string.loading_memory),
+            line2 = stringResource(R.string.please_wait)
+        )
         // todo loading screen
     }
 }
@@ -342,6 +307,7 @@ fun SinglePermission() {
                 Lifecycle.Event.ON_START -> {
                     permissionState.launchPermissionRequest()
                 }
+
                 else -> {
 
                 }

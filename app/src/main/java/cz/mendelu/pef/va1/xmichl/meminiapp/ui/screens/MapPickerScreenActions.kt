@@ -1,5 +1,5 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
-interface MapScreenActions {
+interface MapPickerActions {
     fun onLocationChanged(latitude: Double, longitude: Double)
 }

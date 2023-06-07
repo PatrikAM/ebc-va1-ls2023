@@ -36,6 +36,10 @@ fun NavGraph(
             TodayScreen(navigation)
         }
 
+        composable(Destination.MapScreen.route) {
+            MapScreen(navigation)
+        }
+
         composable(Destination.SearchScreen.route) {
             SearchScreen(navigation)
         }
@@ -70,11 +74,11 @@ fun NavGraph(
             AddEditMemoryScreen(navigation, id = if (id != -1L) id else null)
         }
 
-        composable(route = Destination.MapScreen.route) {
-            MapScreen(navigation = navigation, latitude = null, longitude = null)
+        composable(route = Destination.MapPickerScreen.route) {
+            MapPickerScreen(navigation = navigation, latitude = null, longitude = null)
         }
 
-        composable(route = Destination.MapScreen.route + "/{location}",
+        composable(route = Destination.MapPickerScreen.route + "/{location}",
             arguments = listOf(
                 navArgument("location"){
                     type = NavType.StringType
@@ -87,14 +91,14 @@ fun NavGraph(
                 val jsonAdapter: JsonAdapter<Location> =
                     moshi.adapter(Location::class.java)
                 val location: Location? = jsonAdapter.fromJson(jsonString)
-                MapScreen(
+                MapPickerScreen(
                     navigation = navigation,
                     latitude = location!!.latitude,
                     longitude = location.longitude
                 )
 
             } else {
-                MapScreen(navigation = navigation, latitude = null, longitude = null)
+                MapPickerScreen(navigation = navigation, latitude = null, longitude = null)
             }
         }
 

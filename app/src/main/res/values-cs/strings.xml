@@ -20,4 +20,7 @@
     <string name="confirmation">Potvrzení</string>
     <string name="confirm">Potvrdit</string>
     <string name="no">Zrušit</string>
+    <string name="loading_memory">Vaše vzpomínka se načítá.</string>
+    <string name="please_wait">Prosím, počkejte.</string>
+    <string name="map">Mapa</string>
 </resources>

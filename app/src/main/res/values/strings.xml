@@ -19,4 +19,7 @@
     <string name="confirmation">Confirmation</string>
     <string name="confirm">Confirm</string>
     <string name="no">Cancel</string>
+    <string name="loading_memory">Your memory is being loaded.</string>
+    <string name="please_wait">Please wait.</string>
+    <string name="map">Map</string>
 </resources>

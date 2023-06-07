@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarViewDay
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
@@ -39,7 +40,7 @@ fun NavScreen(
     val navItems = listOf(
         NavItem.TimeLine,
         NavItem.Today,
-        //NavItem.Map,
+        NavItem.Map,
         NavItem.Search,
         //NavItem.Settings
     )
@@ -119,8 +120,7 @@ fun NavScreen(
 enum class NavItem(val destination: Destination, @StringRes val title: Int, val icon: ImageVector) {
     TimeLine(Destination.TimeLineScreen, R.string.timelineNavLabel, Icons.Default.CalendarViewDay),
     Today(Destination.TodayScreen, R.string.todayNavLabel, Icons.Default.Today),
-
-    //Map("map", R.string.mapNavLabel, Icons.Default.Map),
+    Map(Destination.MapScreen, R.string.mapNavLabel, Icons.Default.Map),
     Search(Destination.SearchScreen, R.string.searchNavLabel, Icons.Default.Search),
     //Settings("settings", R.string.settingsNavLabel, Icons.Default.Settings),
 }

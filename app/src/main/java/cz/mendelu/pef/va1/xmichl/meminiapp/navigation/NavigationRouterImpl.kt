@@ -41,16 +41,16 @@ class NavigationRouterImpl(
         navController.navigate(Destination.MemoryDetailScreen.route + "/" + id)
     }
 
-    override fun navigateToMapScreen(latitude: Double?, longitude: Double?) {
+    override fun navigateToMapPickerScreen(latitude: Double?, longitude: Double?) {
         if (latitude != null && longitude != null) {
             val moshi: Moshi = Moshi.Builder().build()
             val jsonAdapter: JsonAdapter<Location> =
                 moshi.adapter(Location::class.java)
             val jsonString = jsonAdapter.toJson(Location(latitude, longitude))
 
-            navController.navigate(Destination.MapScreen.route + "/" + jsonString)
+            navController.navigate(Destination.MapPickerScreen.route + "/" + jsonString)
         } else {
-            navController.navigate(Destination.MapScreen.route)
+            navController.navigate(Destination.MapPickerScreen.route)
         }
 
     }
