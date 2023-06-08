@@ -2,9 +2,6 @@ package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
 import Carousel
 import ConfirmationAlertDialog
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,15 +36,25 @@ fun MemoryDetailScreen(
     id: Long
 ) {
 
+    var data: MemoryDetailScreenData by remember {
+        mutableStateOf(viewModel.data)
+    }
+
     viewModel.memoryId = id
+
     viewModel.memoryDetailUIState.value.let {
         when (it) {
             MemoryDetailUIState.Default -> {}
             MemoryDetailUIState.Loading -> {
                 viewModel.initMemory()
+                data = viewModel.data
             }
 
-            MemoryDetailUIState.MemoryChanged -> {}
+            MemoryDetailUIState.MemoryChanged -> {
+                viewModel.initMemory()
+                //data = viewModel.data
+            }
+
             MemoryDetailUIState.MemoryDeleted -> {
                 LaunchedEffect(it) {
                     navigation.returnBack()
@@ -57,12 +65,8 @@ fun MemoryDetailScreen(
 
     val confirmDialogPresented = remember { mutableStateOf(false) }
 
-    val data: MemoryDetailScreenData by remember {
-        mutableStateOf(viewModel.data)
-    }
-
     BackArrowScreen(
-        appBarTitle = viewModel.data.memory.title, //TODO: title
+        appBarTitle = viewModel.data.memory.title,
         onBackClick = {
             navigation.returnBack()
         },
@@ -79,59 +83,20 @@ fun MemoryDetailScreen(
             }
         }
     ) {
-//        DetailScreenContent(
-//            actions = viewModel,
-//            data = data
-//        )
-
         if (confirmDialogPresented.value) {
             ConfirmationAlertDialog(
-                message = stringResource(R.string.cofrimation_message),
+                message = stringResource(R.string.confirmation_message),
                 onDismiss = {},
-                //actionLabel = stringResource(R.string.yes),
                 onConfirm = {
                     viewModel.deleteMemory()
                     confirmDialogPresented.value = false
                 }
             )
         }
-        Carousel(items = data.memory.getImages())
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(modifier = Modifier.fillMaxSize(0.8F)) {
-                Text("")
-                Text(text = DateUtils.getDateString(data.memory.date))
-                Text("")
-                Text(
-                    text = if (data.memory.hasLocation())
-                        if (Location(
-                                data.memory.latitude!!,
-                                data.memory.longitude
-                            ).getNearestCity() != null
-                        )
-                            "${
-                                Location(
-                                    data.memory.latitude!!,
-                                    data.memory.longitude
-                                ).getNearestCity()
-                            }"
-                        else
-                            "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
-                    else ""
-                )
-
-                if (data.memory.hasLocation()) {
-                    Text("")
-                }
-
-                Text(
-                    text = if (data.memory.description == null) "" else data.memory.description!!,
-                    textAlign = TextAlign.Justify
-                )
-            }
-        }
+        DetailScreenContent(
+            data = data,
+            actions = viewModel
+        )
     }
 }
 
@@ -140,25 +105,14 @@ fun DetailScreenContent(
     actions: MemoryDetailActions,
     data: MemoryDetailScreenData
 ) {
-    if (data.confirmDialogPresented) {
-        ConfirmationAlertDialog(
-            message = stringResource(R.string.cofrimation_message),
-            onDismiss = {},
-            //actionLabel = stringResource(R.string.yes),
-            onConfirm = {
-                actions.deleteMemory()
-                data.confirmDialogPresented = false
-            }
-        )
-    }
+    Carousel(items = data.memory.getImages())
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Column(modifier = Modifier.fillMaxSize(0.8F)) {
-
+            Text("")
             Text(text = DateUtils.getDateString(data.memory.date))
-            Text(text = data.memory.primaryPhoto)
             Text("")
             Text(
                 text = if (data.memory.hasLocation())
@@ -177,6 +131,10 @@ fun DetailScreenContent(
                         "${data.memory.latitude!!.round()}; ${data.memory.longitude!!.round()}"
                 else ""
             )
+
+            if (data.memory.hasLocation()) {
+                Text("")
+            }
 
             Text(
                 text = if (data.memory.description == null) "" else data.memory.description!!,

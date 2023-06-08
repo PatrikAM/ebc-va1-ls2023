@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="memini_blue">#5271FF</color>
+    <color name="memini_pink">#F15BB5</color>
+    <color name="memini_green">#5CE1E6</color>
 </resources>

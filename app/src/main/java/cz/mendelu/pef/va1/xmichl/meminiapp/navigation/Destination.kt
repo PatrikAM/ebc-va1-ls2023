@@ -9,4 +9,5 @@ sealed class Destination(val route: String) {
     object AddEditMemoryScreen : Destination(route = "addedit")
     object MapPickerScreen : Destination(route = "mappicker")
     object MapScreen : Destination(route = "map")
+    object SettingsScreen : Destination(route = "settings")
 }

@@ -8,6 +8,7 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.AddEditMemoryFAB
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.memoryList.MemoryList
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
+import java.util.Calendar
 
 @Composable
 fun TodayScreen(navigation: INavigationRouter) {
@@ -21,6 +22,15 @@ fun TodayScreen(navigation: INavigationRouter) {
             AddEditMemoryFAB(navigation = navigation)
         }
     ) {
-        MemoryList(navigation = navigation, today = true)
+        MemoryList(
+            navigation = navigation,
+            memoryFilter = { memory ->
+                val calendar = Calendar.getInstance().apply { timeInMillis = memory.date }
+                val today = Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }
+                Calendar.getInstance().apply { set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0) }
+                calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) && calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)
+                //memory.date == System.currentTimeMillis()
+            }
+        )
     }
 }

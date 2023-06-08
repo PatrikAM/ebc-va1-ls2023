@@ -31,6 +31,12 @@ class NavigationRouterImpl(
         )
     }
 
+    override fun navigateToSettingsScreen() {
+        navController.navigate(
+            Destination.SettingsScreen.route
+        )
+    }
+
     override fun navigateAddEditMemoryScreen(id: Long?) {
         navController.navigate(
             Destination.AddEditMemoryScreen.route + "/" + id

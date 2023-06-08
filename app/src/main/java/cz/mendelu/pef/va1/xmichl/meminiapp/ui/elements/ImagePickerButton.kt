@@ -41,10 +41,13 @@ fun ImagePickerButton(
     ) {
         if (imageName != null) {
             val imageFile = File(LocalContext.current.filesDir, imageName)
-            AsyncImage(
-                model = imageFile.absolutePath,
-                contentDescription = null,
+            SquareImageBox(
+                imageFilePath = imageFile.absolutePath
             )
+//            AsyncImage(
+//                model = imageFile.absolutePath,
+//                contentDescription = null,
+//            )
         } else {
             Image(
                 painter = painterResource(id = R.drawable.undraw_polaroid),
@@ -56,7 +59,7 @@ fun ImagePickerButton(
         }
         Box(
             modifier = Modifier
-                .size(64.dp)
+                .size(40.dp)
                 .border(2.dp, Color.White, CircleShape)
         ) {
             IconButton(

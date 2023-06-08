@@ -40,6 +40,10 @@ fun NavGraph(
             MapScreen(navigation)
         }
 
+        composable(Destination.SettingsScreen.route) {
+            SettingsScreen(navigation)
+        }
+
         composable(Destination.SearchScreen.route) {
             SearchScreen(navigation)
         }

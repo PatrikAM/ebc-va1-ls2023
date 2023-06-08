@@ -10,6 +10,7 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.documentfile.provider.DocumentFile
+import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.architecture.BaseViewModel
 import cz.mendelu.pef.va1.xmichl.meminiapp.database.IMemoriesRepository
 import kotlinx.coroutines.launch
@@ -29,9 +30,13 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
         mutableStateOf(AddEditScreenUIState.Loading)
 
     override fun saveMemory(context: Context) {
-        if (data.memory.title.isEmpty() || data.primaryPhotoPicked == null) {
-            // error
-            // TODO check date and primary photo also
+        if (data.memory.title.isEmpty()) {
+            data.titleError = R.string.title_can_not_be_empty
+            addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
+        }
+
+        if (data.primaryPhotoPicked == null) {
+            data.photoError = R.string.primary_photo_error
             addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
         } else {
             if (data.primaryPhotoPicked != data.memory.primaryPhoto) {
@@ -93,7 +98,7 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
         val outputFile = context.filesDir.resolve(fileName)
         input.copyTo(outputFile.outputStream())
         Log.d("file", "${outputFile.exists()}")
-        //input.close()
+        input.close()
 
         when (data.photoIndex) {
             0 -> {

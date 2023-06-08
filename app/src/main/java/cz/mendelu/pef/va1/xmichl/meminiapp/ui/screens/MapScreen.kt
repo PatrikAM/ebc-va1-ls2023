@@ -40,10 +40,12 @@ fun MapScreen(
             MemoryListUIState.Default -> {
                 viewModel.loadMemories()
             }
+
             is MemoryListUIState.Success -> {
                 memories.clear()
                 memories.addAll(it.memories)
             }
+
             MemoryListUIState.Error -> TODO()
             MemoryListUIState.Loading -> TODO()
         }
@@ -88,56 +90,26 @@ fun MapScreenContent(
         position = CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 10f)
     }
 
-//    Column(modifier = Modifier.fillMaxSize()) {
-
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        //.padding(paddingValues)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            uiSettings = mapUiSettings
         ) {
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-                uiSettings = mapUiSettings
-            ) {
-                memories.forEach { poi ->
-                    if (poi.hasLocation()) {
-                        Marker(
-                            state = MarkerState(LatLng(poi.latitude!!, poi.longitude!!)),
-                            onClick = {
-                                navigation.navigateToMemoryDetailScreen(id = poi.id!!)
-                                false
-                            }
-                        )
-//                googleMap.addMarker(
-//                    MarkerOptions()
-//                        .position(LatLng(poi.latitude!!, poi.longitude!!))
-//                        .title(poi.title)
-//                )
-                    }
+            memories.forEach { poi ->
+                if (poi.hasLocation()) {
+                    Marker(
+                        state = MarkerState(LatLng(poi.latitude!!, poi.longitude!!)),
+                        onClick = {
+                            navigation.navigateToMemoryDetailScreen(id = poi.id!!)
+                            false
+                        }
+                    )
                 }
             }
-
-//    Box(modifier = Modifier.fillMaxSize()) {
-//        MapView(
-//            //context = LocalContext.current,
-//            //modifier = Modifier.fillMaxSize(),
-//            //cameraState = cameraPositionState,
-//            mapContent = {
-//                // Add custom map content here (e.g., styling, overlays)
-//                memories.forEach { marker ->
-//                    if (marker.hasLocation()) {
-//                        Marker(
-//                            modifier = Modifier
-//                                .zIndex(1f),
-//                            markerOptions = marker
-//                        )
-//                    }
-//                }
-//            }
-//        )
-//    }
         }
     }
-//}
+}

@@ -7,8 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,13 +27,18 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.tasks.Tasks
-import com.google.maps.android.compose.*
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapEffect
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.MapsComposeExperimentalApi
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import cz.mendelu.pef.va1.xmichl.meminiapp.MeminiApp
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
-import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.BackArrowScreen
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -38,13 +49,14 @@ fun MapPickerScreen(
     longitude: Double?
 ) {
 
-    NavScreen(
+    BackArrowScreen(
         appBarTitle = stringResource(R.string.map_screen),
-        boxContent = true,
+        //boxContent = true,
         onBackClick = { navigation.returnBack() },
-        backArrowNeeded = true,
-        destination = Destination.MapPickerScreen,
-        navigation = navigation
+        fullScreenContent = true
+        //backArrowNeeded = true,
+        //destination = Destination.MapPickerScreen,
+        //navigation = navigation
     )
     {
         MapPickerScreenContent(
@@ -64,6 +76,7 @@ fun MapPickerScreen(
 
 }
 
+@OptIn(MapsComposeExperimentalApi::class)
 @Composable
 fun MapPickerScreenContent(
     paddingValues: PaddingValues,
@@ -71,22 +84,32 @@ fun MapPickerScreenContent(
     longitude: Double,
     actions: MapPickerActions,
     onSaveClick: () -> Unit
-){
+) {
 
 //    getCurrentLocation()
 //    Log.d("location", getCurrentLocation().toString())
 
-    val mapUiSettings by remember { mutableStateOf(
-        MapUiSettings(
-            zoomControlsEnabled = false,
-            mapToolbarEnabled = false)
-    ) }
+    val mapUiSettings by remember {
+        mutableStateOf(
+            MapUiSettings(
+                zoomControlsEnabled = false,
+                mapToolbarEnabled = false
+            )
+        )
+    }
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(latitude, longitude), 10f)
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .fillMaxHeight(),
+//        //contentAlignment = Alignment.Center
+//    ) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
 //        .padding(paddingValues)
     ) {
         GoogleMap(
@@ -96,7 +119,7 @@ fun MapPickerScreenContent(
         ) {
 
             MapEffect { map ->
-                map.setOnMarkerDragListener(object : OnMarkerDragListener{
+                map.setOnMarkerDragListener(object : OnMarkerDragListener {
                     override fun onMarkerDrag(p0: Marker) {
 
                     }
@@ -129,13 +152,16 @@ fun MapPickerScreenContent(
             Text(text = "Save location")
         }
     }
+    //}
 }
 
 @Composable
 fun getCurrentLocation(): Location? {
     var location by remember { mutableStateOf<Location?>(null) }
-    val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(
-        MeminiApp.appContext)
+    val fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(
+            MeminiApp.appContext
+        )
 
     LaunchedEffect(true) {
         try {

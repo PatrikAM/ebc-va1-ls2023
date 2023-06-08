@@ -14,10 +14,12 @@ import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 
 @Composable
-fun SquareImageBox(imageFilePath: String, size: Dp) {
+fun SquareImageBox(
+    imageFilePath: String,
+    size: Dp? = null
+) {
     Box(
-        modifier = Modifier
-            .size(size)
+        modifier = (if (size == null) Modifier else Modifier.size(size))
             .aspectRatio(1f)
             .background(Color.LightGray),
         contentAlignment = Alignment.Center

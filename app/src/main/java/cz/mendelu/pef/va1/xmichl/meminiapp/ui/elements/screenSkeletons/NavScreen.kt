@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarViewDay
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -63,8 +64,9 @@ fun NavScreen(
                     }
                 },
                 actions = {
-                    //actions()
-                    Avatar()
+                    IconButton(onClick = { navigation.navigateToSettingsScreen() }) {
+                        Icon(imageVector = Icons.Filled.Settings, contentDescription = "")
+                    }
                 }
             )
         },
@@ -97,10 +99,9 @@ fun NavScreen(
             LazyColumn(
                 modifier = contentModifier.padding(it).fillMaxSize(),
                 horizontalAlignment = CenterHorizontally,
-//                verticalArrangement = Arrangement.Center,
             ) {
                 item {
-                    content(it)
+                        content(it)
                 }
             }
         } else {

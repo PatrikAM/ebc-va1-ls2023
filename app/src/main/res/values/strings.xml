@@ -5,7 +5,7 @@
     <string name="mapNavLabel">Map</string>
     <string name="searchNavLabel">Search</string>
     <string name="date">Date</string>
-    <string name="cofrimation_message">Are you sure you want to delete this memory?</string>
+    <string name="confirmation_message">Are you sure you want to delete this memory?</string>
     <string name="yes">Yes</string>
     <string name="my_memories">My memories</string>
     <string name="search_memories">Search memories</string>
@@ -22,4 +22,11 @@
     <string name="loading_memory">Your memory is being loaded.</string>
     <string name="please_wait">Please wait.</string>
     <string name="map">Map</string>
+    <string name="settings_about"><![CDATA[Settings&About]]></string>
+    <string name="search_title">Search</string>
+    <string name="title_can_not_be_empty">Title can not be empty.</string>
+    <string name="primary_photo_error">First photo can not be unselected.</string>
+    <string name="sadly_no_memory_in_here">Sadly, no memory in here.</string>
+    <string name="let_s_go_and_create_some">Let\'s go and create some!</string>
+    <string name="not_found">Not found.</string>
 </resources>

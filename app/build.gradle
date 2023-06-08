@@ -128,7 +128,7 @@ android {
 
     defaultConfig {
         applicationId "cz.mendelu.pef.va1.xmichl.meminiapp"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -226,4 +226,7 @@ dependencies {
     // Month&YearPicker
     // https://github.com/DogusTeknoloji/compose-date-picker
     implementation 'com.github.DogusTeknoloji:compose-date-picker:1.1.1'
+
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }

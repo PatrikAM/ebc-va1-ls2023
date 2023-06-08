@@ -2,6 +2,7 @@ package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -42,7 +43,7 @@ fun BackArrowScreen(
         )
     }) {
         if (!fullScreenContent) {
-            LazyColumn(modifier = Modifier.padding(it)) {
+            LazyColumn(modifier = Modifier.padding(it).fillMaxSize()) {
                 item {
                     content(it)
                 }

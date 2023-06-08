@@ -13,6 +13,10 @@ class AddEditScreenData {
         longitude = null,
         latitude = null
     )
+
+    var titleError: Int? = null
+    var photoError: Int? = null
+
     var loading: Boolean = true
     var photoIndex: Int = 0
 

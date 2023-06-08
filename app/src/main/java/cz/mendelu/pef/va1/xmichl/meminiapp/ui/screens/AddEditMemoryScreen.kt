@@ -19,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -55,7 +56,6 @@ fun AddEditMemoryScreen(
 
     viewModel.memoryId = id
 
-
     navigation.getNavController().currentBackStackEntry?.let {
         if (navigation.getNavController().currentBackStackEntry!!.savedStateHandle.contains("location")) {
             val mapScreenResult =
@@ -83,7 +83,6 @@ fun AddEditMemoryScreen(
         mutableStateOf(viewModel.data)
     }
 
-
     viewModel.addEditMemoryUIState.value.let {
         when (it) {
             AddEditScreenUIState.Loading -> {
@@ -99,10 +98,6 @@ fun AddEditMemoryScreen(
             AddEditScreenUIState.MemorySaved -> {
                 LaunchedEffect(it) {
                     navigation.returnBack()
-                    if (id != null) {
-                        navigation.returnBack()
-                        navigation.navigateToMemoryDetailScreen(id)
-                    }
                 }
             }
         }
@@ -130,8 +125,6 @@ fun AddEditScreenContent(
 ) {
 
     if (!data.loading) {
-
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -149,7 +142,6 @@ fun AddEditScreenContent(
                             }
                         })
 
-
                 Row {
 
                     SinglePermission()
@@ -157,7 +149,6 @@ fun AddEditScreenContent(
                     ImagePickerButton(imageName = data.primaryPhotoPicked, size = 0.25f, onClick = {
                         actions.onPhotoPickerStart(0)
                         singlePhotoPickerLauncher.launch(
-//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                             "image/*"
                         )
                     }, onClear = {
@@ -171,7 +162,6 @@ fun AddEditScreenContent(
                         onClick = {
                             actions.onPhotoPickerStart(1)
                             singlePhotoPickerLauncher.launch(
-//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                                 "image/*"
                             )
                         },
@@ -183,7 +173,6 @@ fun AddEditScreenContent(
                     ImagePickerButton(imageName = data.ternaryPhotoPicked, size = 0.5f, onClick = {
                         actions.onPhotoPickerStart(2)
                         singlePhotoPickerLauncher.launch(
-//                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                             "image/*"
                         )
                     }, onClear = {
@@ -192,11 +181,20 @@ fun AddEditScreenContent(
                     })
                 }
 
+                data.photoError?.let {
+                    if (data.primaryPhotoPicked == null) {
+                        Text(text = stringResource(id = it), color = Color.Red)
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(50.dp))
                 MyTextfield(value = data.memory.title,
                     onValueChange = {
                         actions.onTitleChanged(it)
                     },
+                    charLimit = 25,
+                    textError = data.titleError,
+                    singleLine = true,
                     leadingIcon = Icons.Default.Title,
                     label = stringResource(R.string.title),
                     onClearClick = {
