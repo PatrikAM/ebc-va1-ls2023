@@ -21,10 +21,6 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
 
     var memoryId: Long? = null
     var data: AddEditScreenData = AddEditScreenData()
-    var dateEror: Int? = null
-    var titleError: Int? = null
-    var primaryPhotoError: Int? = null
-
 
     val addEditMemoryUIState: MutableState<AddEditScreenUIState> =
         mutableStateOf(AddEditScreenUIState.Loading)

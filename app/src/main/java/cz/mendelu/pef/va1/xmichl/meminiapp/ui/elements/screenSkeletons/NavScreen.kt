@@ -1,6 +1,7 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -12,13 +13,17 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import cz.mendelu.pef.va1.xmichl.meminiapp.R
+import cz.mendelu.pef.va1.xmichl.meminiapp.dataStore.UserSettingsStore
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.Avatar
@@ -97,7 +102,9 @@ fun NavScreen(
     ) {
         if (!boxContent) {
             LazyColumn(
-                modifier = contentModifier.padding(it).fillMaxSize(),
+                modifier = contentModifier
+                    .padding(it)
+                    .fillMaxSize(),
                 horizontalAlignment = CenterHorizontally,
             ) {
                 item {

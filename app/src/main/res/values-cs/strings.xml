@@ -27,5 +27,10 @@
     <string name="search_title">Hledat</string>
     <string name="title_can_not_be_empty">Název nesmí být prázdný.</string>
     <string name="primary_photo_error">První fotografie musí být vybrána.</string>
+    <string name="sadly_no_memory_in_here">Je tu smutno.</string>
+    <string name="let_s_go_and_create_some">Vytvoř si vzpomínku!</string>
     <string name="not_found">Nenalezeno.</string>
+    <string name="save">Uložit</string>
+    <string name="pick_a_color">Vyberte barvu</string>
+    <string name="button_color">Barva tlačítek:</string>
 </resources>

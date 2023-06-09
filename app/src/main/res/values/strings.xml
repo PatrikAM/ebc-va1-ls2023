@@ -29,4 +29,7 @@
     <string name="sadly_no_memory_in_here">Sadly, no memory in here.</string>
     <string name="let_s_go_and_create_some">Let\'s go and create some!</string>
     <string name="not_found">Not found.</string>
+    <string name="save">Save</string>
+    <string name="pick_a_color">Pick a color</string>
+    <string name="button_color">Button color:</string>
 </resources>

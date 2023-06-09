@@ -30,6 +30,7 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.Destination
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.AddEditMemoryFAB
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.InfoElement
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyButton
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyTextfield
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.memoryList.MemoryList
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.NavScreen
@@ -111,10 +112,13 @@ fun SearchScreen(
                         viewModel.onMonthChanged(null)
                     }
                 )
+
                 Spacer(modifier = Modifier.height(10.dp))
-                Button(onClick = { viewModel.onSearchClick() }) {
-                    Text(text = stringResource(R.string.search_title))
-                }
+
+                MyButton(
+                    text = stringResource(R.string.search_title),
+                    onClick = { viewModel.onSearchClick() }
+                )
 
 
             }
@@ -122,14 +126,7 @@ fun SearchScreen(
             Divider(thickness = 2.dp)
 
 
-            Column(
-//                modifier = Modifier
-//                    .scrollable(
-//                        rememberScrollState(),
-//                        orientation = Orientation.Vertical
-//                    )
-                //.weight(weight =1f, fill = false)
-            ) {
+            Column {
                 MemoryList(
                     navigation = navigation,
                     memoryFilter =

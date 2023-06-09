@@ -40,6 +40,7 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.ImagePickerButton
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.InfoElement
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.Loading
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.LoadingScreen
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyButton
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyTextfield
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.BackArrowScreen
 import cz.mendelu.pef.va1.xmichl.meminiapp.utils.DateUtils
@@ -217,18 +218,6 @@ fun AddEditScreenContent(
 
                 )
 
-//                data.primaryPhotoPicked?.let {
-//                    val imageFile = File(LocalContext.current.filesDir, data.primaryPhotoPicked!!)
-//                    Column(modifier = Modifier.fillMaxSize()) {
-//                        Image(
-//                            rememberAsyncImagePainter(imageFile),
-//                            contentDescription = "...",
-//                        )
-//
-//                    }
-//                }
-
-
                 InfoElement(
                     value = DateUtils.getDateString(data.memory.date),
                     label = stringResource(R.string.date),
@@ -273,9 +262,11 @@ fun AddEditScreenContent(
                     })
 
                 Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = { actions.saveMemory(context_) }) {
-                    Text(text = "Save")
-                }
+
+                MyButton(
+                    text = stringResource(R.string.save),
+                    onClick = { actions.saveMemory(context_) }
+                )
             }
         }
 //        } else {

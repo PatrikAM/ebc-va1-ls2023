@@ -8,20 +8,16 @@ import kotlinx.coroutines.launch
 
 class MemoryListViewModel(
     private val repository: IMemoriesRepository
-    )
-    : BaseViewModel(), MemoryListActions
-    {
+) : BaseViewModel(), MemoryListActions {
 
     val memoryListUIState: MutableState<MemoryListUIState> =
         mutableStateOf(MemoryListUIState.Default)
 
-    fun loadMemories(){
+    fun loadMemories() {
         launch {
             repository.getAll().collect {
                 memoryListUIState.value = MemoryListUIState.Success(it)
             }
         }
     }
-
-
 }
