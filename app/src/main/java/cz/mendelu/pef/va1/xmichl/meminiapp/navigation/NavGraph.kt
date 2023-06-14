@@ -15,7 +15,6 @@ import com.squareup.moshi.Moshi
 import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens.*
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),

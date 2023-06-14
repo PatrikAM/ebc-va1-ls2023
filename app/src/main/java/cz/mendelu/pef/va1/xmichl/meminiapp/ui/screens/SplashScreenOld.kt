@@ -10,7 +10,7 @@ import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.core.animation.doOnEnd
-import cz.mendelu.pef.va1.xmichl.meminiapp.MainActivity
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.activities.MainActivity
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenOld: ComponentActivity() {

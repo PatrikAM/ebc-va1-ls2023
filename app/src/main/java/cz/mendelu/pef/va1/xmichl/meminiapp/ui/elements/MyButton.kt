@@ -1,8 +1,10 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements
 
+import android.content.res.Resources.Theme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -43,7 +45,7 @@ fun MyButton(
             .padding(horizontal = 16.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorResource(id = theColor.value),
-            contentColor = Color.White
+            contentColor = MaterialTheme.colorScheme.onBackground
         ),
     ) {
         Text(

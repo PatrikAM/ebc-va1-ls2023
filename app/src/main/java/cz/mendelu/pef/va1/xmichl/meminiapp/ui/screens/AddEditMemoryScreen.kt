@@ -6,14 +6,12 @@ import android.os.Build
 import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material.icons.filled.Today
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -38,7 +36,6 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.ImagePickerButton
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.InfoElement
-import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.Loading
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.LoadingScreen
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyButton
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.MyTextfield
@@ -47,7 +44,6 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.utils.DateUtils
 import org.koin.androidx.compose.getViewModel
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditMemoryScreen(
     navigation: INavigationRouter,
@@ -104,11 +100,7 @@ fun AddEditMemoryScreen(
         }
     }
     val context_ = LocalContext.current
-    BackArrowScreen(appBarTitle = stringResource(R.string.Add_Edit), //TODO: memory title
-        //destination = Destination.AddEditMemoryScreen, //TODO: prev or prevprev destination
-        //navigation = navigation,
-        //backArrowNeeded = true,
-        //fullScreenContent = true,
+    BackArrowScreen(appBarTitle = stringResource(R.string.Add_Edit),
         onBackClick = {
             viewModel.deleteAllPhotoHolders(context_)
             navigation.returnBack()
@@ -119,16 +111,17 @@ fun AddEditMemoryScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun AddEditScreenContent(
     actions: AddEditMemoryActions, data: AddEditScreenData, navigation: INavigationRouter
 ) {
 
     if (!data.loading) {
+        SinglePermission()
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Column(
                 modifier = Modifier.fillMaxSize(0.9f),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -145,7 +138,7 @@ fun AddEditScreenContent(
 
                 Row {
 
-                    SinglePermission()
+                    //SinglePermission()
 
                     ImagePickerButton(imageName = data.primaryPhotoPicked, size = 0.25f, onClick = {
                         actions.onPhotoPickerStart(0)
@@ -257,7 +250,6 @@ fun AddEditScreenContent(
                     leadingIcon = Icons.Default.Notes,
                     label = stringResource(R.string.description) + " (" + stringResource(R.string.optional) + ")",
                     onClearClick = {
-//                    data.memory.description = null
                         actions.onDescriptionChanged(null)
                     })
 
@@ -269,9 +261,7 @@ fun AddEditScreenContent(
                 )
             }
         }
-//        } else {
-//            permissionsRequester.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-//        }
+
     } else {
         LoadingScreen(
             line1 = stringResource(R.string.loading_memory),
@@ -281,13 +271,16 @@ fun AddEditScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @SuppressLint("PermissionLaunchedDuringComposition")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SinglePermission() {
+    var perm: String = android.Manifest.permission.READ_EXTERNAL_STORAGE
+    if (Build.VERSION.SDK_INT > 32) {
+        perm = android.Manifest.permission.READ_MEDIA_IMAGES
+    }
     val permissionState =
-        rememberPermissionState(permission = android.Manifest.permission.READ_MEDIA_IMAGES)
+        rememberPermissionState(permission = perm)
     val lifecycleOwner = LocalLifecycleOwner.current
 
     DisposableEffect(key1 = lifecycleOwner, effect = {

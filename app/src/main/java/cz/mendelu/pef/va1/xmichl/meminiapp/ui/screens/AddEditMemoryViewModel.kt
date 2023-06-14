@@ -1,12 +1,8 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.screens
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.documentfile.provider.DocumentFile
@@ -14,7 +10,6 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.R
 import cz.mendelu.pef.va1.xmichl.meminiapp.architecture.BaseViewModel
 import cz.mendelu.pef.va1.xmichl.meminiapp.database.IMemoriesRepository
 import kotlinx.coroutines.launch
-import java.io.FileOutputStream
 
 class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : BaseViewModel(),
     AddEditMemoryActions {
@@ -26,15 +21,23 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
         mutableStateOf(AddEditScreenUIState.Loading)
 
     override fun saveMemory(context: Context) {
+
+        var isError: Boolean = false
+
         if (data.memory.title.isEmpty()) {
             data.titleError = R.string.title_can_not_be_empty
             addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
+            isError = true
         }
 
         if (data.primaryPhotoPicked == null) {
             data.photoError = R.string.primary_photo_error
             addEditMemoryUIState.value = AddEditScreenUIState.MemoryChanged
-        } else {
+            isError = true
+        }
+
+        if (!isError) {
+
             if (data.primaryPhotoPicked != data.memory.primaryPhoto) {
                 deleteImage(context, data.memory.primaryPhoto)
                 data.memory.primaryPhoto = data.primaryPhotoPicked!!
@@ -70,6 +73,7 @@ class AddEditMemoryViewModel(private val repository: IMemoriesRepository) : Base
             }
         }
     }
+
 
     override fun onTitleChanged(title: String) {
         data.memory.title = title

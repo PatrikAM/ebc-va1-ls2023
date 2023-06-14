@@ -130,5 +130,4 @@ enum class NavItem(val destination: Destination, @StringRes val title: Int, val 
     Today(Destination.TodayScreen, R.string.todayNavLabel, Icons.Default.Today),
     Map(Destination.MapScreen, R.string.mapNavLabel, Icons.Default.Map),
     Search(Destination.SearchScreen, R.string.searchNavLabel, Icons.Default.Search),
-    //Settings("settings", R.string.settingsNavLabel, Icons.Default.Settings),
 }

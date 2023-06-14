@@ -2,4 +2,19 @@
 <resources>
 
     <style name="Theme.MeminiApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.CustomSplashScreenTheme" parent="Theme.AppCompat.Light">
+<!--        <item name="windowSplashScreenBackground">@color/background</item>-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avatar_place_holder</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.MeminiApp</item>
+    </style>
+    <style name="Theme.MeminiApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.ComposableToDo.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.ComposableToDo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
