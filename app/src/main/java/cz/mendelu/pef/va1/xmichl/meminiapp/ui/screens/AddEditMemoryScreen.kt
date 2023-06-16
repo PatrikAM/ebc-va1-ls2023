@@ -60,6 +60,7 @@ fun AddEditMemoryScreen(
                     "location"
                 )?.observeAsState()
 
+
             mapScreenResult?.value?.let {
                 val moshi: Moshi = Moshi.Builder().build()
                 val jsonAdapter: JsonAdapter<Location> = moshi.adapter(Location::class.java)
