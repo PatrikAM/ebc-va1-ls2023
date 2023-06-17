@@ -33,5 +33,5 @@
     <string name="save">Uložit</string>
     <string name="pick_a_color">Vyberte barvu</string>
     <string name="button_color">Barva tlačítek:</string>
-    <string name="marker_help"><![CDATA[In order to select a position drag&drop displayed pin.]]></string>
+    <string name="marker_help"><![CDATA[Pro výběr místa přesuňte špendlík.]]></string>
 </resources>

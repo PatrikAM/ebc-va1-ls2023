@@ -86,26 +86,28 @@ fun SettingsScreen(
                         Text("DB version:")
                         getAppVersion(context)?.let {_ -> Text("APP version:")}
                         Text("Developer:")
+                        Text("")
+                        Text(stringResource(R.string.button_color))
                     }
                     Column {
                         Text("$ver")
                         getAppVersion(context)?.let { it1 -> Text(it1.versionName) }
                         Text(text = "Patrik Michl")
                         Text(text = "patrik.michl@mendelu.cz")
+                        ColorPicker(
+                            onColorSelected = {
+                                viewModel.onColorChanged(it)
+                            },
+                            onColorConfirmed = {
+                                viewModel.onColorSaved(
+                                    context = context
+                                )
+                            },
+                            color = data.color
+                        )
                     }
 
                 }
-                ColorPicker(
-                    onColorSelected = {
-                        viewModel.onColorChanged(it)
-                    },
-                    onColorConfirmed = {
-                        viewModel.onColorSaved(
-                            context = context
-                        )
-                    },
-                    color = data.color
-                )
             }
         }
 

@@ -1,6 +1,8 @@
 package cz.mendelu.pef.va1.xmichl.meminiapp.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -32,3 +34,9 @@ val Typography = Typography(
     )
     */
 )
+
+@Composable
+fun basicText() = MaterialTheme.typography.bodyLarge
+
+@Composable
+fun smallText() = MaterialTheme.typography.labelSmall

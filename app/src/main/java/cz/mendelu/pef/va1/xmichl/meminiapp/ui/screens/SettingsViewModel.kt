@@ -7,7 +7,7 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.architecture.BaseViewModel
 import cz.mendelu.pef.va1.xmichl.meminiapp.dataStore.UserSettingsStore
 import kotlinx.coroutines.launch
 
-class SettingsViewModel() : BaseViewModel() {
+class SettingsViewModel : BaseViewModel() {
 
     val settingsUIState: MutableState<SettingsUIState> =
         mutableStateOf(SettingsUIState.Loading)
@@ -32,7 +32,7 @@ class SettingsViewModel() : BaseViewModel() {
         val store = UserSettingsStore(context = context)
 
         launch {
-            store.getUserColor.collect() {
+            store.getUserColor.collect {
                 settingsUIState.value = SettingsUIState.Success(it)
             }
         }

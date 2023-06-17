@@ -44,6 +44,9 @@ import cz.mendelu.pef.va1.xmichl.meminiapp.models.Location
 import cz.mendelu.pef.va1.xmichl.meminiapp.navigation.INavigationRouter
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.elements.screenSkeletons.BackArrowScreen
 import cz.mendelu.pef.va1.xmichl.meminiapp.ui.theme.basicMargin
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.theme.basicText
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.theme.getBasicTextColor
+import cz.mendelu.pef.va1.xmichl.meminiapp.ui.theme.halfMargin
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -148,11 +151,7 @@ fun MapPickerScreenContent(
 
         }
 
-        Box(
-//            modifier = Modifier
-////            .padding(halfMargin())
-//            .align(Alignment.TopCenter)
-        ) {
+        Box {
             MarkerHelp()
         }
 
@@ -213,15 +212,15 @@ fun getCurrentLocation(): Location? {
 @Composable
 fun MarkerHelp(){
     Card(
-//        colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background),
+        colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.background),
         elevation = CardDefaults.cardElevation(10.dp)
     ) {
         Column(
-//            modifier = Modifier.padding(start = basicMargin(), end = basicMargin(), top = halfMargin(), bottom = halfMargin())
+            modifier = Modifier.padding(start = basicMargin(), end = basicMargin(), top = halfMargin(), bottom = halfMargin())
         ) {
             Text(
-//                style = basicText(),
-//                color = getBasicTextColor(),
+                style = basicText(),
+                color = getBasicTextColor(),
                 text = stringResource(R.string.marker_help)
             )
         }

@@ -20,7 +20,7 @@ class DateUtils {
             } else {
                 format = SimpleDateFormat(DATE_FORMAT_EN, Locale.ENGLISH)
             }
-            return format.format(calendar.getTime())
+            return format.format(calendar.time)
         }
 
         fun getUnixTime(year: Int, month: Int, day: Int): Long {

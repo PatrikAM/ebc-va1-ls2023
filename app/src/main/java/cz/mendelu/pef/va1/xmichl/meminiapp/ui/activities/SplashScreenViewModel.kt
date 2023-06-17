@@ -7,9 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SplashScreenActivityViewModel(
-    //private val dataStoreRepository: IDataStoreRepository
-) : BaseViewModel() {
+class SplashScreenActivityViewModel : BaseViewModel() {
 
     private val _splashScreenState = MutableStateFlow<SplashScreenUiState>(SplashScreenUiState.Default)
     val splashScreenState: StateFlow<SplashScreenUiState> = _splashScreenState

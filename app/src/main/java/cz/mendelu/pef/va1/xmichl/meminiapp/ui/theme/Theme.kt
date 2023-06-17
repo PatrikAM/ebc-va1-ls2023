@@ -67,5 +67,3 @@ fun MeminiAppTheme(
         content = content
     )
 }
-
-fun basicMargin() = 16.dp
